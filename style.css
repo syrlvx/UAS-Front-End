@@ -1,0 +1,40 @@
+html {
+    scroll-behavior: smooth;
+}
+
+/* Menambahkan padding-top untuk menghindari konten tertutup navbar */
+body {
+    padding-top: 70px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Gradasi pada Navbar */
+.navbar {
+    background: linear-gradient(45deg, rgb(86, 132, 201), #7ca6ed);
+    padding: 15px 0;
+        /* Menambah padding atas dan bawah pada navbar */
+}
+.navbar .navbar-brand {
+    font-size: 1.8rem;
+    /* Membesarkan ukuran font pada nama brand */
+    color: white !important;
+    /* Mengubah warna teks menjadi putih */
+    margin-right: 100px;
+    /* Memberi jarak antara brand dan link navbar */
+}
+.navbar .nav-link {
+    color: white !important;
+    /* Mengubah teks navbar menjadi putih */
+}
+/* Gradasi pada Footer */
+footer {
+    background: linear-gradient(45deg,#7ca6ed, rgb(86, 132, 201));
+    margin-top: auto;
+}
+footer .text-light,
+footer a {
+    color: white !important;
+    /* Mengubah teks footer menjadi putih */
+}
