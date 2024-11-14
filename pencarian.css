@@ -14,11 +14,13 @@ body {
 .navbar {
     background: linear-gradient(45deg, rgb(86, 132, 201), #7ca6ed);
     padding: 15px 0;
-        /* Menambah padding atas dan bawah pada navbar */
+    /* Menambah padding atas dan bawah pada navbar */
 }
-.navbar .navbar-nav{
+
+.navbar .navbar-nav {
     margin-right: -80px;
 }
+
 .navbar .navbar-brand {
     font-size: 1.8rem;
     /* Membesarkan ukuran font pada nama brand */
@@ -27,20 +29,24 @@ body {
     margin-right: 100px;
     /* Memberi jarak antara brand dan link navbar */
 }
+
 .navbar .nav-link {
     margin-right: 15px;
     color: white !important;
     /* Mengubah teks navbar menjadi putih */
 }
+
 .navbar .container {
     margin-left: 30px;
     /* Tambahkan margin kiri untuk menggeser konten navbar ke kanan */
 }
+
 /* Gradasi pada Footer */
 footer {
-    background: linear-gradient(45deg,#7ca6ed, rgb(86, 132, 201));
+    background: linear-gradient(45deg, #7ca6ed, rgb(86, 132, 201));
     margin-top: auto;
 }
+
 footer .text-light,
 footer a {
     color: white !important;
