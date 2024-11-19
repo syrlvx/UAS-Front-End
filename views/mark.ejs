@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="id" ng-app="gayaHidupApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaya Hidup Sehat - Mark as Done</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/mark.css">
+</head>
+
+<body ng-controller="GayaHidupController">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/"><strong>Seyuel Lifestyle</strong></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto d-flex align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Wellness
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="/pencarian">Calories</a></li>
+                            <li><a class="dropdown-item" href="">Nutrition Calculator</a></li>
+                            <li><a class="dropdown-item" href="/consul">Consultancy</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="">Daily Planner</a></li>
+                    <li class="nav-item"><a class="nav-link" href="">Notes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="">Mark As Done</a></li>
+                    <li class="nav-item ms-3">
+                        <a class="nav-link" href="/login"><button type="submit" class="btn btn-primary">Login</button></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container my-5">
+        <h1 class="text-center mb-4">Daftar Kegiatan Gaya Hidup Sehat</h1>
+        <div class="card mb-3" ng-repeat="kegiatan in daftarKegiatan">
+            <div class="card-body d-flex align-items-center">
+                <div class="me-3">
+                    <!-- Tampilkan tanda ceklis biru jika selesai, tanda X merah jika belum -->
+                    <span class="status-icon"
+                        ng-class="{'text-success': kegiatan.selesai, 'text-danger': !kegiatan.selesai}"
+                        ng-click="toggleStatus($index)">
+                        {{ kegiatan.selesai ? '✔' : '✘' }}
+                    </span>
+                </div>
+                <div>
+                    <h5 class="card-title mb-1">{{ kegiatan.nama }}</h5>
+                    <p class="card-text mb-2">{{ kegiatan.deskripsi }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-4 border-top">
+        <div class="container text-center">
+            <div class="social-icons mb-3">
+                <a href="https://www.whatsapp.com" target="_blank" class="mx-2"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://www.instagram.com" target="_blank" class="mx-2"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.youtube.com" target="_blank" class="mx-2"><i class="fab fa-youtube"></i></a>
+            </div>
+            <small>
+                <a href="https://policies.google.com/privacy?hl=en-US" class="me-3">Privacy Policy</a> |
+                <a href="https://www.termsandconditionsgenerator.com/" class="ms-3">Terms & Conditions</a>
+            </small>
+        </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="/js/mark.js"></script>
+</body>
+
+</html>
