@@ -1,0 +1,134 @@
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        background-color: #f8f9fa;
+        padding-top: 70px;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    .navbar {
+        background: linear-gradient(45deg, rgb(66, 107, 169), #98b9f2);
+        padding: 15px 0;
+        border-bottom: 2px solid #7fd8ecfb;
+        margin-bottom: 0px;
+    }
+
+    .navbar .navbar-nav {
+        margin-right: -60px;
+    }
+
+    .navbar .navbar-brand {
+        font-weight: bold;
+        font-size: 1.8rem;
+        color: white !important;
+        margin-right: 100px;
+    }
+
+    .navbar .nav-link {
+        margin-right: 15px;
+        color: white !important;
+        transition: transform 0.3s ease, color 0.3s ease;
+    }
+
+    .navbar .nav-link:hover {
+        color: #ffffff;
+        transform: scale(1.1);
+    }
+
+    .navbar-toggler {
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba(255, 255, 255, 0.5)' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+    }
+
+    .navbar .dropdown-menu {
+        background-color: rgb(66, 107, 169);
+    }
+
+    .navbar .dropdown-item {
+        color: #ffffff;
+    }
+
+    .navbar .dropdown-item:hover {
+        background-color: #98b9f2;
+        color: #ffffff;
+    }
+
+    .navbar .container {
+        margin-left: 30px;
+    }
+
+    .navbar .btn-primary {
+        background-color: rgb(66, 107, 169);
+        border-color: rgb(66, 107, 169);
+    }
+
+    .navbar.btn-primary:hover {
+        background-color: #7ca6ed;
+        border-color: rgb(89, 135, 204);
+    }
+
+    .card-header {
+        font-weight: bold;
+    }
+
+    .card-footer h5 {
+        margin: 0;
+        color: #007bff;
+    }
+
+    .btn-primary {
+        background-color: rgb(66, 107, 169);
+        border-color: rgb(66, 107, 169);
+    }
+
+    .btn-primary:hover {
+        background-color: #7ca6ed;
+        border-color: rgb(89, 135, 204);
+    }
+
+    footer {
+        background: linear-gradient(45deg, #98b9f2, rgb(66, 107, 169));
+        border-bottom: 2px solid #7fd8ecfb;
+        padding: 20px 0;
+        color: #ffffff !important;
+        border-top: 2px solid #7fd8ecfb;
+        position: relative;
+        bottom: 0;
+        width: 100%;
+        margin-top: auto;
+    }
+
+    footer .text-light,
+    footer a {
+        color: white !important;
+    }
+
+    .social-icons a {
+        font-size: 1.5rem;
+        color: #ffffff;
+        transition: color 0.3s ease, text-shadow 0.3s ease;
+    }
+
+    .social-icons a:hover {
+        color: #98b9f2;
+        text-shadow: 0 0 8px #2effff, 0 0 15px rgb(0, 255, 234);
+    }
+
+    .sticky-navbar {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .sticky-navbar.scrolled {
+        background-color: rgba(0, 0, 0, 0.8);
+        box-shadow: 0 4px 8px rgba(0, 255, 255, 0.5);
+    }
