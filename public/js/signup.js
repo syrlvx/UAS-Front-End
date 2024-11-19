@@ -1,35 +1,30 @@
 const app = angular.module('loginApp', []);
 
-app.controller('LoginController', ['$scope', function ($scope) {
-  $scope.user = {};
-  $scope.emailError = false; 
-  $scope.passwordError = false; 
+app.controller('LoginController', ['$scope', '$http', function ($scope, $http) {
+    $scope.user = {}; // Data user untuk form
+    $scope.errorMessage = ''; // Pesan error dari backend
 
-  $scope.submitForm = function () {
-    // Reset error messages
-    $scope.emailError = false;
-    $scope.passwordError = false;
+    // Fungsi untuk submit form
+    $scope.submitForm = function () {
+        console.log($scope.user);  // Debug data yang dikirim
+        $http.post('/signup', $scope.user)
+            .then(function (response) {
+                if (response.data.success) {
+                    alert('Pendaftaran berhasil!');
+                    $scope.user = {}; // Reset form jika berhasil
+                }
+            })
+            .catch(function (error) {
+                // Tangkap error dari backend
+                if (error.data && error.data.error) {
+                    $scope.errorMessage = error.data.error;
+                } else {
+                    $scope.errorMessage = 'Terjadi kesalahan pada server.';
+                }
 
-    // Validasi email
-    if (!$scope.user.email || !$scope.user.email.endsWith('@gmail.com')) {
-      $scope.emailError = true;
-    }
-
-    // Validasi password
-    if (!$scope.user.password || $scope.user.password.trim().length < 6) {
-      $scope.passwordError = true;
-    }
-
-    // Jika validasi gagal, jangan submit form
-    if ($scope.emailError || $scope.passwordError) {
-      return;
-    }
-
-    // Jika semua validasi lolos
-    alert('Login successful for: ' + $scope.user.email);
-    $scope.user.email = '';
-    $scope.user.password = '';
-    $scope.loginForm.$setPristine();
-    $scope.loginForm.$setUntouched();
-  };
+                // Tampilkan modal dengan pesan error
+                const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+                errorModal.show();
+            });
+    };
 }]);
