@@ -1,0 +1,214 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+body {
+    background-color: #f8f9ff;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+.main-container {
+    display: flex;
+    gap: 24px;
+}
+
+.sidebar {
+    width: 280px;
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    height: calc(100vh - 40px);
+}
+
+.sidebar-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 8px;
+    margin-bottom: 4px;
+    cursor: pointer;
+}
+
+.sidebar-item:hover {
+    background: #f1f2f9;
+}
+
+.sidebar-item.active {
+    background: #e5e7f8;
+}
+
+.sidebar-count {
+    margin-left: auto;
+    color: #666;
+    font-size: 12px;
+}
+
+.content {
+    flex: 1;
+}
+
+.header {
+    margin-bottom: 24px;
+}
+
+.header h1 {
+    font-size: 24px;
+    color: #333;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.header p {
+    color: #666;
+    font-size: 14px;
+}
+
+.tabs {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 32px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 12px;
+}
+
+.tab {
+    font-size: 14px;
+    color: #666;
+    text-decoration: none;
+    padding: 8px 0;
+    cursor: pointer;
+}
+
+.tab.active {
+    color: #333;
+    font-weight: 500;
+    position: relative;
+}
+
+.tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -13px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: #333;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.column {
+    background-color: #f1f2f9;
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.column-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.column-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+}
+
+.add-card {
+    background-color: #5c6bc0;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.add-card:hover {
+    background-color: #3f4f8c;
+}
+
+.cards-container {
+    margin-top: 12px;
+}
+
+.card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.delete-btn {
+    background: transparent;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    color: red;
+}
+
+.calendar-view {
+    padding: 16px;
+    background-color: white;
+    border-radius: 12px;
+}
+
+.calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.nav-button {
+    background-color: #f1f2f9;
+    border: none;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.nav-button:hover {
+    background-color: #e5e7f8;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+}
+
+.day {
+    text-align: center;
+    padding: 12px;
+    cursor: pointer;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.day:hover {
+    background-color: #e5e7f8;
+}
+
+.empty {
+    background-color: transparent;
+}

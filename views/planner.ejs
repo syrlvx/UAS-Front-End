@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/css/planner.css">
+    <style>
+        .task-form {
+            margin-bottom: 10px;
+            display: flex;
+            gap: 8px;
+        }
+        .task-input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            flex-grow: 1;
+        }
+        .task-submit {
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .task-submit:hover {
+            background-color: #45a049;
+        }
+        .task-indicator {
+            width: 6px;
+            height: 6px;
+            background-color: #4CAF50;
+            border-radius: 50%;
+            display: inline-block;
+            margin-left: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="sidebar">
+            <div class="sidebar-item active" onclick="showDashboard()">Dashboard <span class="sidebar-count">4</span></div>
+            <div class="sidebar-item">Projects <span class="sidebar-count">2</span></div>
+            <div class="sidebar-item" onclick="showCalendar()">Calendar <span class="sidebar-count">1</span></div>
+        </div>
+
+        <div class="content">
+            <div class="header">
+                <h1>Welcome</h1>
+                <p>Manage your tasks efficiently.</p>
+            </div>
+
+            <div class="board" id="dashboard-content">
+                <div class="column" id="to-do-column">
+                    <div class="column-header"><span class="column-title">To Do</span></div>
+                    <form class="task-form" id="todo-form">
+                        <input type="text" class="task-input" id="todo-input" placeholder="Enter new task...">
+                        <input type="datetime-local" class="task-input" id="task-datetime" required>
+                        <button type="submit" class="task-submit">Add Task</button>
+                    </form>
+                    <div id="to-do-cards" class="cards-container"></div>
+                </div>
+
+                <div class="column" style="margin-top: 12px;">
+                    <div class="column-header"><span class="column-title">Done</span></div>
+                    <form class="task-form" id="done-form">
+                        <input type="text" class="task-input" id="done-input" placeholder="Enter completed task...">
+                        <button type="submit" class="task-submit">Add Task</button>
+                    </form>
+                    <div id="done-cards" class="cards-container"></div>
+                </div>
+            </div>
+
+            <div class="calendar-view" id="calendar-content">
+                <div class="calendar-header">
+                    <button class="nav-button" onclick="changeMonth(-1)">&#60;</button>
+                    <h3 id="calendar-month-year">January 2024</h3>
+                    <button class="nav-button" onclick="changeMonth(1)">&#62;</button>
+                </div>
+                <div class="calendar-grid" id="calendar-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentDate = new Date();
+        let tasks = {};  // Store tasks by date, using local storage to persist tasks
+
+        // Load tasks from localStorage if available
+        if (localStorage.getItem('tasks')) {
+            tasks = JSON.parse(localStorage.getItem('tasks'));
+        }
+
+        // Handle todo form submission
+        document.getElementById('todo-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const input = document.getElementById('todo-input');
+            const datetimeInput = document.getElementById('task-datetime');
+            const task = input.value.trim();
+            const datetime = datetimeInput.value;
+            
+            if (task && datetime) {
+                const taskDate = datetime.split('T')[0];  // Format: yyyy-mm-dd
+                if (!tasks[taskDate]) tasks[taskDate] = [];
+                tasks[taskDate].push(task);
+    
+                // Save tasks to localStorage
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+    
+                // Create card
+                const card = document.createElement('div');
+                card.classList.add('card');
+                card.innerHTML = `
+                    <div class="card-title">${task}</div>
+                    <button class="move-btn">✓</button>
+                    <button class="delete-btn">🗑️</button>
+                `;
+    
+                // Add delete functionality
+                card.querySelector('.delete-btn').addEventListener('click', function() {
+                    card.remove();
+                    renderCalendar(); // Re-render calendar to reflect task removal
+                });
+    
+                // Add move to done functionality
+                card.querySelector('.move-btn').addEventListener('click', function() {
+                    card.remove();
+                    const doneCard = card.cloneNode(true);
+                    doneCard.querySelector('.move-btn').remove();
+                    doneCard.querySelector('.delete-btn').addEventListener('click', function() {
+                        doneCard.remove();
+                    });
+                    document.getElementById('done-cards').appendChild(doneCard);
+                    renderCalendar(); // Re-render calendar to reflect task move
+                });
+    
+                document.getElementById('to-do-cards').appendChild(card);
+                input.value = '';
+                datetimeInput.value = '';
+                renderCalendar(); // Re-render to show task indicator on the calendar
+            }
+        });
+    
+        // Handle done form submission
+        document.getElementById('done-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const input = document.getElementById('done-input');
+            const task = input.value.trim();
+            
+            if (task) {
+                const card = document.createElement('div');
+                card.classList.add('card');
+                card.innerHTML = `
+                    <div class="card-title">${task}</div>
+                    <button class="delete-btn">🗑️</button>
+                `;
+                
+                card.querySelector('.delete-btn').addEventListener('click', function() {
+                    card.remove();
+                });
+    
+                document.getElementById('done-cards').appendChild(card);
+                input.value = '';
+            }
+        });
+    
+        // Show the dashboard
+        function showDashboard() {
+            document.getElementById('dashboard-content').style.display = 'block';
+            document.getElementById('calendar-content').style.display = 'none';
+        }
+    
+        // Show the calendar
+        function showCalendar() {
+            document.getElementById('dashboard-content').style.display = 'none';
+            document.getElementById('calendar-content').style.display = 'block';
+            renderCalendar();
+        }
+    
+        // Change month in the calendar
+        function changeMonth(direction) {
+            currentDate.setMonth(currentDate.getMonth() + direction);
+            renderCalendar();
+        }
+    
+        // Render the calendar with task indicators
+        function renderCalendar() {
+            const month = currentDate.getMonth();
+            const year = currentDate.getFullYear();
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            const firstDay = new Date(year, month, 1).getDay();
+            const lastDate = new Date(year, month + 1, 0).getDate();
+            const calendarGrid = document.getElementById('calendar-grid');
+            const calendarMonthYear = document.getElementById('calendar-month-year');
+            
+            calendarMonthYear.textContent = `${monthNames[month]} ${year}`;
+            calendarGrid.innerHTML = ''; // Clear existing grid
+    
+            // Empty cells for previous month
+            for (let i = 0; i < firstDay; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.classList.add('day', 'empty');
+                calendarGrid.appendChild(emptyCell);
+            }
+    
+            // Populate calendar with days
+            for (let day = 1; day <= lastDate; day++) {
+                const dayCell = document.createElement('div');
+                dayCell.classList.add('day');
+                dayCell.textContent = day;
+    
+                // Check if there are tasks for this day
+                const taskDate = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+                if (tasks[taskDate] && tasks[taskDate].length > 0) {
+                    const taskIndicator = document.createElement('span');
+             
+                    taskIndicator.classList.add('task-indicator');
+                    dayCell.appendChild(taskIndicator);
+                }
+    
+                dayCell.onclick = function() { openTaskModal(year, month, day); };
+                calendarGrid.appendChild(dayCell);
+            }
+        }
+    
+        // Open task modal to display tasks for the selected day
+        function openTaskModal(year, month, day) {
+            const taskDate = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+            const taskList = tasks[taskDate] || [];
+            const taskMessage = taskList.length > 0 ? taskList.join("\n") : "No tasks for this day.";
+    
+            alert(`Tasks for ${month + 1}/${day}/${year}:\n\n${taskMessage}`);
+        }
+    
+        // Initial view
+        showDashboard();
+    </script>
+</body>
+</html>
+
