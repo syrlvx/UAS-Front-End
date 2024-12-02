@@ -21,6 +21,13 @@
     .navbar .navbar-nav {
         margin-right: -60px;
     }
+    .navbar .navbar-halo {
+        font-weight: 100;
+        font-size: 1rem;
+        color: white ;
+        margin-right: 275px;
+        text-decoration: none;
+    }
 
     .navbar .navbar-brand {
         font-weight: bold;
