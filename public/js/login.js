@@ -1,35 +1,42 @@
-const app = angular.module('loginApp', []);
+angular.module('loginApp', [])
+    .controller('LoginController', ['$scope', '$http', function ($scope, $http) {
 
-app.controller('LoginController', ['$scope', function ($scope) {
-  $scope.user = {};
-  $scope.emailError = false; 
-  $scope.passwordError = false; 
+        // Model untuk user input
+        $scope.user = {};
 
-  $scope.submitForm = function () {
-    // Reset error messages
-    $scope.emailError = false;
-    $scope.passwordError = false;
+        // Menyimpan error form
+        $scope.emailError = false;
+        $scope.passwordError = false;
 
-    // Validasi email
-    if (!$scope.user.email || !$scope.user.email.endsWith('@gmail.com')) {
-      $scope.emailError = true;
-    }
+        // Fungsi untuk submit form
+        $scope.submitForm = function () {
+            // Validasi form
+            $scope.emailError = !$scope.user.email || !/\S+@\S+\.\S+/.test($scope.user.email);
+            $scope.passwordError = !$scope.user.password || $scope.user.password.length < 6;
 
-    // Validasi password
-    if (!$scope.user.password || $scope.user.password.trim().length < 6) {
-      $scope.passwordError = true;
-    }
-
-    // Jika validasi gagal, jangan submit form
-    if ($scope.emailError || $scope.passwordError) {
-      return;
-    }
-
-    // Jika semua validasi lolos
-    alert('Login successful for: ' + $scope.user.email);
-    $scope.user.email = '';
-    $scope.user.password = '';
-    $scope.loginForm.$setPristine();
-    $scope.loginForm.$setUntouched();
-  };
-}]);
+            if (!$scope.emailError && !$scope.passwordError) {
+                // Kirim data ke backend untuk login
+                $http.post('/login', $scope.user)
+                    .then(function (response) {
+                        // Tangani response dari server
+                        console.log(response.data);
+                        if (response.data.success) {
+                            // Redirect berdasarkan role
+                            window.location.href = response.data.redirectTo;
+                        } else {
+                            // Tampilkan error jika login gagal
+                            alert('Login gagal: ' + response.data.error);
+                        }
+                    })
+                    .catch(function (error) {
+                        // Tangani error dari server
+                        if (error.data && error.data.error) {
+                            alert('Error: ' + error.data.error);
+                        } else {
+                            alert('Terjadi kesalahan saat login');
+                        }
+                        console.error(error);
+                    });
+            }
+        };
+    }]);
