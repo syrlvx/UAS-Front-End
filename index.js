@@ -1,6 +1,7 @@
 const express = require("express");
 const bcrypt = require('bcrypt');
 const User = require('./model/user');
+const isAdmin = require('./middleware/isAdmin');
 const app = express();
 const expressLayouts = require("express-ejs-layouts");
 const port = 3000;
@@ -36,11 +37,43 @@ app.use(express.json());
 
 
 app.get("/", (req, res) => {
-    res.render("index.ejs",{layout:false});
+    const user = req.session.user || null;
+    const isAdmin = user && user.role === "admin"; // Periksa apakah user adalah admin
+    res.render("index.ejs", { 
+        layout: false, 
+        username: user ? user.username : null,  // Kirimkan username
+        isAdmin 
+    });
 });
 
 app.get("/pencarian", (req, res) => {
-    res.render("pencarian.ejs",{layout:false});
+    const user = req.session.user || null;
+    const isAdmin = user && user.role === "admin"; // Periksa apakah user adalah admin
+    res.render("pencarian.ejs", { 
+        layout: false, 
+        username: user ? user.username : null,  // Kirimkan username
+        isAdmin 
+    });
+});
+
+app.get("/notes", (req, res) => {
+    const user = req.session.user || null;
+    const isAdmin = user && user.role === "admin"; // Periksa apakah user adalah admin
+    res.render("notes.ejs", { 
+        layout: false, 
+        username: user ? user.username : null,  // Kirimkan username
+        isAdmin 
+    });
+});
+
+app.get("/planner", (req, res) => {
+    const user = req.session.user || null;
+    const isAdmin = user && user.role === "admin"; // Periksa apakah user adalah admin
+    res.render("planner.ejs", { 
+        layout: false, 
+        username: user ? user.username : null,  // Kirimkan username
+        isAdmin 
+    });
 });
 
 app.get("/login", (req, res) => {
@@ -48,23 +81,45 @@ app.get("/login", (req, res) => {
 });
 
 app.get("/consul", (req, res) => {
-    res.render("consul.ejs",{layout:false});
+    const user = req.session.user || null;
+    const isAdmin = user && user.role === "admin"; // Periksa apakah user adalah admin
+    res.render("consul.ejs", { 
+        layout: false, 
+        username: user ? user.username : null,  // Kirimkan username
+        isAdmin 
+    });
 });
 
 app.get("/kalkulator", (req, res) => {
-    res.render("kalkulator.ejs",{layout:false});
+    const user = req.session.user || null;
+    const isAdmin = user && user.role === "admin"; // Periksa apakah user adalah admin
+    res.render("kalkulator.ejs", { 
+        layout: false, 
+        username: user ? user.username : null,  // Kirimkan username
+        isAdmin 
+    });
 });
 
 app.get("/mark", (req, res) => {
-    res.render("mark.ejs",{layout:false});
+    const user = req.session.user || null;
+    const isAdmin = user && user.role === "admin"; // Periksa apakah user adalah admin
+    res.render("mark.ejs", { 
+        layout: false, 
+        username: user ? user.username : null,  // Kirimkan username
+        isAdmin 
+    });
 });
 
-app.get("/signup", (req, res) => {
+app.get("/admin",isAdmin, (req, res) => {
+    res.render("admin.ejs",{layout:false});
+});
+
+app.get("/signup",(req, res) => {
     res.render("signup.ejs",{layout:false});
 });
 app.post('/signup', async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { email, password,username } = req.body;
 
         // Validasi input
         if (!email || !password) {
@@ -83,7 +138,8 @@ app.post('/signup', async (req, res) => {
         // Membuat user baru
         const newUser = new User({
             email,
-            password: hashedPassword
+            password: hashedPassword,
+            username
         });
 
         await newUser.save();
@@ -92,6 +148,68 @@ app.post('/signup', async (req, res) => {
         console.error('Error registering user:', err);
         res.status(500).json({ error: "Terjadi kesalahan pada server." });
     }
+});
+
+app.post('/login', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        // Validasi input
+        if (!email || !password) {
+            return res.status(400).json({ error: "Email dan password wajib diisi!" });
+        }
+
+        // Cari pengguna berdasarkan email
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(400).json({ error: "Email atau password salah!" });
+        }
+
+        // Verifikasi password
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+            return res.status(400).json({ error: "Email atau password salah!" });
+        }
+
+        // Simpan informasi pengguna di sesi
+        req.session.user = {
+            username : user.username,
+            email: user.email,
+            role: user.role
+        };
+
+        // Tanggapan berdasarkan role
+        if (user.role === "admin") {
+            return res.status(200).json({ success: true, message: "Login berhasil!", redirectTo: "/admin" });
+        }
+
+        res.status(200).json({ success: true, message: "Login berhasil!", redirectTo: "/" });
+    } catch (err) {
+        console.error('Error logging in:', err);
+        res.status(500).json({ error: "Terjadi kesalahan pada server." });
+    }
+});
+app.get('/session-status', (req, res) => {
+   if (req.session.user) {
+        res.json({ 
+            loggedIn: true, 
+            email: req.session.user.email, 
+            username: req.session.user.username,  
+            role: req.session.user.role 
+        });
+    } else {
+        res.json({ loggedIn: false });
+    }
+});
+
+
+app.post('/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            return res.status(500).json({ error: "Terjadi kesalahan saat logout." });
+        }
+        res.redirect('/'); // Redirect ke halaman utama setelah logout
+    });
 });
 
 app.listen(port, () => {
