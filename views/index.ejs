@@ -11,39 +11,78 @@
 </head>
 
 <body>
-    <!-- Navbar -->
+    <div class="modal fade login-modal" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">WARNING</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Anda harus login terlebih dahulu untuk mengakses halaman ini.
+                </div>
+                <div class="modal-footer">
+                    <a href="/login" class="btn btn-primary">Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Navbar -->
+    
     <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="/"><strong>Seyuel Lifestyle</strong></a>
+            <a class="navbar-brand">
+                <img src="/assets/img/logo.png" alt="Logo" style="max-height: 70px; width: auto;">
+            </a>
+            <div class="navbar-title">
+                <strong>SEYUEL</strong>
+            </div>
+            <a class="navbar-halo" href="/">
+                <strong>
+                    <%= username ? `Halo, ${username}` : '' %>
+                </strong>
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto d-flex align-items-center">
-                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/" >Home</a></li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
+                            data-bs-toggle="dropdown" aria-expanded="false" onclick="checkLogin(event)">
                             Wellness
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="/pencarian">Calories</a></li>
-                            <li><a class="dropdown-item" href="/kalkulator">Nutrition Calculator</a></li>
-                            <li><a class="dropdown-item" href="/consul">Consultancy</a></li>
+                            <li><a class="dropdown-item" href="/pencarian" onclick="checkLogin(event)">Calories</a></li>
+                            <li><a class="dropdown-item" href="/kalkulator" onclick="checkLogin(event)">Nutrition
+                                    Calculator</a></li>
+                            <li><a class="dropdown-item" href="/consul" onclick="checkLogin(event)">Consultancy</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="">Daily Planner</a></li>
-                    <li class="nav-item"><a class="nav-link" href="">Notes</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/mark">Mark As Done</a></li>
-                    <li class="nav-item ms-3">
-                        <a class="nav-link" href="/login"><button type="submit"
-                                class="btn btn-primary">Login</button></a>
+                    <li class="nav-item"><a class="nav-link" href="/planner" onclick="checkLogin(event)">Daily Planner</a>
                     </li>
+                    <li class="nav-item"><a class="nav-link" href="/notes" onclick="checkLogin(event)">Notes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/mark" onclick="checkLogin(event)">Mark As Done</a></li>
+                    <% if (isAdmin) { %>
+                        <li class="nav-item"><a class="nav-link" href="/admin">Admin Dashboard</a></li>
+                        <% } %>
+                            <li class="nav-item ms-3">
+                                <% if (username) { %>
+                                    <button class="btn btn-danger" onclick="logout()">Logout</button>
+                                    <% } else { %>
+                                        <a class="nav-link" href="/login">
+                                            <button type="submit" class="btn btn-primary">Login</button>
+                                        </a>
+                                        <% } %>
+                            </li>
                 </ul>
             </div>
         </div>
     </nav>
+
 
     <!-- Hero Section -->
     <section id="home" class="bg-light text-center py-3" style="margin-top: 0px;">
@@ -64,7 +103,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="card shadow-sm hover-card">
-                        <img src="suhu.png" class="card-img-top" alt="Article image">
+                        <img src="/assets/img/syr.jpg" class="card-img-top" alt="Article image">
                         <div class="card-body">
                             <h4 class="card-title">Sherly</h4>
                             <p class="card-text">College Student</p>
@@ -75,7 +114,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="card shadow-sm hover-card">
-                        <img src="graham.png" class="card-img-top" alt="Article image">
+                        <img src="sem.jpeg" class="card-img-top" alt="Article image">
                         <div class="card-body">
                             <h4 class="card-title">Samuel George</h4>
                             <p class="card-text">College Student</p>
@@ -86,7 +125,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="card shadow-sm hover-card">
-                        <img src="hooke.png" class="card-img-top" alt="Article image">
+                        <img src="/assets/img/yum.jpg" class="card-img-top" alt="Article image">
                         <div class="card-body">
                             <h4 class="card-title">Yumna Atikah</h4>
                             <p class="card-text">College Student</p>
@@ -98,19 +137,142 @@
             </div>
     </section>
 
+    <div class="modal fade info-modal" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="infoModalLabel">The Power of Healthy Eating: Nourish Your Body for a Better
+                        Life</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Carousel -->
+                    <div id="healthyEatingCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="https://mmc.tirto.id/image/2023/01/25/istock-855098134_ratio-16x9.jpg" class="d-block w-100" alt="Healthy food 1">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://cdn0-production-images-kly.akamaized.net/jzMwVeFtOtC5JGZM8HTe3EoJsMk=/800x450/smart/filters:quality(75):strip_icc():format(webp)/kly-media-production/medias/3296890/original/062880500_1605444683-dan-gold-4_jhDO54BYg-unsplash.jpg" class="d-block w-100" alt="Healthy food 2">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://asset-2.tstatic.net/pontianak/foto/bank/images/ilustrasi-makanan-sehat-bergizi-seimbang-4545554.jpg" class="d-block w-100" alt="Healthy food 3">
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#healthyEatingCarousel"
+                            data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#healthyEatingCarousel"
+                            data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                    <h5><%= articles[0].subjudul %></h5>
+                    <p><%= articles.paragraf1 %>
+                    <p>Whole grains, such as quinoa, brown rice, and oats, offer complex carbohydrates that provide sustained energy throughout
+                    the day. Unlike refined grains, they are digested slowly, helping to maintain steady blood sugar levels and preventing
+                    energy crashes. These grains are also high in dietary fiber, which supports digestive health and promotes a feeling of
+                    fullness, aiding in weight management.Lean proteins, including fish, poultry, tofu, and legumes, play a crucial role in building and repairing muscles.
+                    Proteins contain amino acids, the building blocks of life, which are essential for cellular repair and regeneration.
+                    Incorporating high-quality proteins into your meals can enhance muscle strength, support tissue recovery, and even boost
+                    metabolism, helping you stay lean and active.
+                    
+                    <p>Healthy fats, found in foods like avocados, nuts, seeds, and olive oil, are often misunderstood. These fats are
+                    essential for brain health, supporting cognitive functions such as memory and concentration. Omega-3 fatty acids, found
+                    in fatty fish like salmon, are particularly beneficial for reducing inflammation, enhancing mood, and protecting against
+                    neurological disorders.By consuming a balanced mix of these nutrient-rich foods, you also support mental clarity and emotional well-being.
+                    Vitamins and minerals like magnesium, B vitamins, and zinc help regulate stress levels and improve sleep quality. The
+                    brain, one of the most energy-demanding organs in your body, thrives on nutrients from these foods, enabling sharper
+                    thinking, better focus, and a more positive outlook.Ultimately, choosing nutrient-rich foods is about giving your body the tools it needs to thrive, repair itself, and
+                    prevent chronic diseases. It’s an investment in your long-term health, paving the way for a life filled with vitality
+                    and resilience. Every nutrient-dense meal you eat brings you closer to a stronger, healthier, and more energized version
+                    of yourself.</p>
+                </div>
+            </div>
+        </div>
+    </div><div class="modal fade info-modal" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="infoModalLabel">The Power of Healthy Eating: Nourish Your Body for a Better
+                        Life</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Carousel -->
+                    <div id="healthyEatingCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="https://mmc.tirto.id/image/2023/01/25/istock-855098134_ratio-16x9.jpg" class="d-block w-100" alt="Healthy food 1">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://cdn0-production-images-kly.akamaized.net/jzMwVeFtOtC5JGZM8HTe3EoJsMk=/800x450/smart/filters:quality(75):strip_icc():format(webp)/kly-media-production/medias/3296890/original/062880500_1605444683-dan-gold-4_jhDO54BYg-unsplash.jpg" class="d-block w-100" alt="Healthy food 2">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://asset-2.tstatic.net/pontianak/foto/bank/images/ilustrasi-makanan-sehat-bergizi-seimbang-4545554.jpg" class="d-block w-100" alt="Healthy food 3">
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#healthyEatingCarousel"
+                            data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#healthyEatingCarousel"
+                            data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                    <h5>Why Choose Nutrient-Rich Foods?</h5>
+                    <p>Healthy, nutrient-rich foods are the foundation of a vibrant and energetic life. These foods are not just fuel; they are
+                    the building blocks that enable your body and mind to perform at their best. Nutrient-rich options, such as fresh
+                    vegetables, fruits, lean proteins, and whole grains, provide essential vitamins, minerals, and energy that your body
+                    needs to function optimally. Incorporating these foods into your daily routine can have transformative effects on your
+                    overall well-being.For instance, fresh vegetables and fruits are packed with antioxidants, which combat harmful free radicals in your body,
+                    reducing inflammation and boosting your immune system. Leafy greens like spinach and kale are rich in iron and folate,
+                    which support blood health, while colorful fruits like berries and oranges provide a burst of vitamin C to ward off
+                    illnesses and keep your skin glowing.
+                    
+                    <p>Whole grains, such as quinoa, brown rice, and oats, offer complex carbohydrates that provide sustained energy throughout
+                    the day. Unlike refined grains, they are digested slowly, helping to maintain steady blood sugar levels and preventing
+                    energy crashes. These grains are also high in dietary fiber, which supports digestive health and promotes a feeling of
+                    fullness, aiding in weight management.Lean proteins, including fish, poultry, tofu, and legumes, play a crucial role in building and repairing muscles.
+                    Proteins contain amino acids, the building blocks of life, which are essential for cellular repair and regeneration.
+                    Incorporating high-quality proteins into your meals can enhance muscle strength, support tissue recovery, and even boost
+                    metabolism, helping you stay lean and active.
+                    
+                    <p>Healthy fats, found in foods like avocados, nuts, seeds, and olive oil, are often misunderstood. These fats are
+                    essential for brain health, supporting cognitive functions such as memory and concentration. Omega-3 fatty acids, found
+                    in fatty fish like salmon, are particularly beneficial for reducing inflammation, enhancing mood, and protecting against
+                    neurological disorders.By consuming a balanced mix of these nutrient-rich foods, you also support mental clarity and emotional well-being.
+                    Vitamins and minerals like magnesium, B vitamins, and zinc help regulate stress levels and improve sleep quality. The
+                    brain, one of the most energy-demanding organs in your body, thrives on nutrients from these foods, enabling sharper
+                    thinking, better focus, and a more positive outlook.Ultimately, choosing nutrient-rich foods is about giving your body the tools it needs to thrive, repair itself, and
+                    prevent chronic diseases. It’s an investment in your long-term health, paving the way for a life filled with vitality
+                    and resilience. Every nutrient-dense meal you eat brings you closer to a stronger, healthier, and more energized version
+                    of yourself.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Featured Articles Section -->
     <section id="trends" class="container my-5">
         <h2 class="text-center mb-4">Latest in Wellness</h2>
         <div class="row">
             <div class="col-md-4">
                 <div class="card shadow-sm hover-card">
-                    <img src="meditasi.png" class="card-img-top" alt="Article image">
+                    <img src="https://cdn.yummy.co.id/content-images/images/20230111/9b12b4e9e59a367bb46ddf19234766aa.jpg?x-oss-process=image/format,webp" class="card-img-top" alt="Article image">
                     <div class="card-body">
-                        <h5 class="card-title">Meditation Techniques</h5>
-                        <p class="card-text">Discover mindfulness techniques that help you relax and find inner peace.
-                        </p>
-                        <a href="https://www.cnnindonesia.com/gaya-hidup/20190717102939-255-412852/cara-meditasi-yang-benar-dan-mudah-bagi-pemula"
-                            class="btn btn-outline-primary">Read more</a>
+                        <h5 class="card-title">Nutritious Food</h5>
+                        <p class="card-text">Fuels your body, boosts your energy, and supports overall well-being for a healthier, more vibrant life.</p>
+                        <a href="#" class="btn btn-outline-primary"
+                            onclick="showModal(event, 'Nutritious Food')">
+                            Read more
+                        </a>
                     </div>
                 </div>
             </div>
@@ -121,8 +283,10 @@
                         <h5 class="card-title">Fitness Tips</h5>
                         <p class="card-text">Boost your energy and stay fit with our top fitness tips for a healthier
                             lifestyle.</p>
-                        <a href="https://www.health.com/weight-loss/30-simple-diet-and-fitness-tips"
-                            class="btn btn-outline-primary">Read more</a>
+                        <a href="#" class="btn btn-outline-primary"
+                            onclick="showModal(event, 'Meditation Techniques', 'Discover mindfulness techniques that help you relax and find inner peace.')">
+                            Read more
+                        </a>
                     </div>
                 </div>
             </div>
@@ -133,8 +297,10 @@
                         <h5 class="card-title">Work Out Exercise</h5>
                         <p class="card-text">Get stronger and leaner with targeted strength training exercises that
                             deliver results.</p>
-                        <a href="https://www.healthline.com/health/fitness-exercise/at-home-workouts"
-                            class="btn btn-outline-primary">Read more</a>
+                        <a href="#" class="btn btn-outline-primary"
+                            onclick="showModal(event, 'Meditation Techniques')">
+                            Read more
+                        </a>
                     </div>
                 </div>
             </div>
@@ -225,42 +391,42 @@
 
     <!-- Testimonials Section -->
     <section id="testimonials" class="container my-5">
-        <h2 class="text-center mb-4">What Our Readers Say</h2>
+        <h2 class="text-center mb-4">What Our Specialist Say</h2>
         <div class="row text-center">
             <div class="col-md-4">
                 <blockquote class="blockquote">
-                    <p>"Inspiring articles and valuable insights on living a balanced lifestyle!"</p>
-                    <cite class="blockquote-footer">Alexandra Smith</cite>
+                    <p>"Let food be thy medicine and medicine be thy food."</p>
+                    <cite class="blockquote-footer">Hippocrates</cite>
                 </blockquote>
             </div>
             <div class="col-md-4">
                 <blockquote class="blockquote">
-                    <p>"Their tips on wellness and mindfulness have really helped me."</p>
-                    <cite class="blockquote-footer">Michael Lee</cite>
+                    <p>"Every bite you take is either fighting disease or feeding it."</p>
+                    <cite class="blockquote-footer">Jessica Green, Holistic Nutritionist</cite>
                 </blockquote>
             </div>
             <div class="col-md-4">
                 <blockquote class="blockquote">
-                    <p>"Love their take on sustainable fashion and healthy living."</p>
-                    <cite class="blockquote-footer">Emma Brown</cite>
+                    <p>"Your plate is your canvas. Choose natural colors to paint a vibrant life."</p>
+                    <cite class="blockquote-footer">Sophia Lin, Dietitian</cite>
                 </blockquote>
             </div>
             <div class="col-md-4">
                 <blockquote class="blockquote">
-                    <p>"Inspiring articles and valuable insights on living a balanced lifestyle!"</p>
-                    <cite class="blockquote-footer">Alexandra Smith</cite>
+                    <p>"Healthy food is not a restriction; it’s a gift you give to your body."</p>
+                    <cite class="blockquote-footer">Lisa Brown, Health Coach</cite>
                 </blockquote>
             </div>
             <div class="col-md-4">
                 <blockquote class="blockquote">
-                    <p>"Their tips on wellness and mindfulness have really helped me."</p>
-                    <cite class="blockquote-footer">Michael Lee</cite>
+                    <p>"Good nutrition doesn’t just add years to your life; it adds life to your years."</p>
+                    <cite class="blockquote-footer">James Carter, Nutrition Consultant</cite>
                 </blockquote>
             </div>
             <div class="col-md-4">
                 <blockquote class="blockquote">
-                    <p>"Love their take on sustainable fashion and healthy living."</p>
-                    <cite class="blockquote-footer">Emma Brown</cite>
+                    <p>"Balanced nutrition is the foundation of a healthy body and mind."</p>
+                    <cite class="blockquote-footer">Dr. Amanda Wilson, Nutrition Expert</cite>
                 </blockquote>
             </div>
         </div>
@@ -268,55 +434,167 @@
 
     <section id="faq" class="faq-section py-5">
         <div class="container">
-            <h2 class="text-center">FAQs tentang Pola Makanan Sehat</h2>
-
+            <h2 class="text-center" style="margin-bottom: 30px;">FAQs about Healthy Eating</h2>
             <div class="accordion" id="faqAccordion">
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="faq1">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapse1" aria-expanded="true" aria-controls="collapse1">
-                            Apa itu pola makan sehat?
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1"
+                            aria-expanded="true" aria-controls="collapse1">
+                            What is healthy eating?
                         </button>
                     </h2>
                     <div id="collapse1" class="accordion-collapse collapse show" aria-labelledby="faq1"
                         data-bs-parent="#faqAccordion">
                         <div class="accordion-body">
-                            Pola makan sehat adalah konsumsi makanan yang memenuhi kebutuhan nutrisi tubuh dengan
-                            seimbang,
-                            termasuk karbohidrat, protein, lemak sehat, vitamin, dan mineral.
+                            Healthy eating involves consuming a balanced diet that provides the necessary nutrients for your
+                            body,
+                            including carbohydrates, proteins, healthy fats, vitamins, and minerals.
                         </div>
                     </div>
                 </div>
-
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="faq2">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
-                            Berapa jumlah kalori yang ideal per hari?
+                            What is the ideal number of calories per day?
                         </button>
                     </h2>
                     <div id="collapse2" class="accordion-collapse collapse" aria-labelledby="faq2"
                         data-bs-parent="#faqAccordion">
                         <div class="accordion-body">
-                            Kebutuhan kalori per hari bervariasi tergantung usia, jenis kelamin, dan aktivitas fisik.
-                            Rata-rata, pria membutuhkan sekitar 2.500 kalori, sementara wanita membutuhkan sekitar 2.000
-                            kalori per hari.
+                            Caloric needs vary depending on age, gender, and physical activity. On average, men need around
+                            2,500
+                            calories, while women need around 2,000 calories per day.
                         </div>
                     </div>
                 </div>
-
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="faq3">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
-                            Bagaimana cara menjaga pola makan sehat saat sibuk?
+                            How can I maintain a healthy diet when I’m busy?
                         </button>
                     </h2>
                     <div id="collapse3" class="accordion-collapse collapse" aria-labelledby="faq3"
                         data-bs-parent="#faqAccordion">
                         <div class="accordion-body">
-                            Anda dapat menjaga pola makan sehat dengan merencanakan makanan sebelumnya, memilih camilan
-                            sehat, dan membawa bekal yang bergizi saat bekerja atau bepergian.
+                            You can maintain a healthy diet by planning meals ahead, choosing healthy snacks, and packing
+                            nutritious
+                            meals when working or traveling.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq4">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+                            What are the benefits of eating fruits and vegetables?
+                        </button>
+                    </h2>
+                    <div id="collapse4" class="accordion-collapse collapse" aria-labelledby="faq4"
+                        data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Fruits and vegetables are rich in vitamins, minerals, and fiber, which are essential for
+                            digestive health,
+                            boosting the immune system, and improving skin health. They are also low in calories and help
+                            maintain
+                            an ideal weight.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq5">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
+                            Are carbohydrates bad for the body?
+                        </button>
+                    </h2>
+                    <div id="collapse5" class="accordion-collapse collapse" aria-labelledby="faq5"
+                        data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Carbohydrates are not bad, but it’s important to choose healthy sources like whole grains, brown
+                            rice,
+                            and vegetables. Complex carbohydrates provide more stable energy and are better for the body.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq6">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
+                            What are healthy fats?
+                        </button>
+                    </h2>
+                    <div id="collapse6" class="accordion-collapse collapse" aria-labelledby="faq6"
+                        data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Healthy fats come from natural sources such as avocados, nuts, fatty fish like salmon, and olive
+                            oil.
+                            These fats are beneficial for heart health, brain function, and help absorb vitamins.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq7">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapse7" aria-expanded="false" aria-controls="collapse7">
+                            How can I choose healthy snacks?
+                        </button>
+                    </h2>
+                    <div id="collapse7" class="accordion-collapse collapse" aria-labelledby="faq7"
+                        data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Choose snacks that are rich in fiber, protein, and healthy fats, such as nuts, fresh fruits, or
+                            low-fat
+                            yogurt. Avoid snacks with added sugars or trans fats.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq8">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapse8" aria-expanded="false" aria-controls="collapse8">
+                            Does eating dinner affect my weight?
+                        </button>
+                    </h2>
+                    <div id="collapse8" class="accordion-collapse collapse" aria-labelledby="faq8"
+                        data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Eating dinner doesn’t directly affect your weight, but choosing light, balanced meals at night
+                            can help
+                            control calories and improve sleep quality.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq9">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapse9" aria-expanded="false" aria-controls="collapse9">
+                            What is a balanced diet?
+                        </button>
+                    </h2>
+                    <div id="collapse9" class="accordion-collapse collapse" aria-labelledby="faq9"
+                        data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            A balanced diet is one that includes all food groups: carbohydrates, proteins, healthy fats,
+                            vitamins,
+                            and minerals to ensure that your body receives all the nutrients it needs.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq10">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapse10" aria-expanded="false" aria-controls="collapse10">
+                            How can I maintain a healthy diet while traveling?
+                        </button>
+                    </h2>
+                    <div id="collapse10" class="accordion-collapse collapse" aria-labelledby="faq10"
+                        data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            While traveling, you can maintain a healthy diet by packing nutritious meals, choosing healthy
+                            options
+                            at restaurants, and avoiding processed or fast foods that are high in calories.
                         </div>
                     </div>
                 </div>
@@ -325,23 +603,23 @@
     </section>
 
     <!-- Subscribe Section -->
-    <section id="subscribe" class="container my-5">
-        <div class="card p-4 shadow-sm">
-            <h2 class="text-center">Join Our Community</h2>
-            <p class="text-center">Subscribe for the latest lifestyle updates</p>
-            <form class="row g-3 justify-content-center">
-                <div class="col-md-5">
-                    <input type="text" class="form-control" placeholder="First Name" required>
-                </div>
-                <div class="col-md-5">
-                    <input type="email" class="form-control" placeholder="Email" required>
-                </div>
-                <div class="col-auto">
-                    <button type="submit" class="btn btn-primary">Subscribe</button>
-                </div>
-            </form>
-        </div>
-    </section>
+        <section id="subscribe" class="container my-5">
+            <div class="card p-4 shadow-sm">
+                <h2 class="text-center">Join Our Community</h2>
+                <p class="text-center">Subscribe for the latest lifestyle updates</p>
+                <form id="subscribeForm" class="row g-3 justify-content-center">
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" id="firstName" placeholder="First Name" required>
+                    </div>
+                    <div class="col-md-5">
+                        <input type="email" class="form-control" id="email" placeholder="Email" required>
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary">Subscribe</button>
+                    </div>
+                </form>
+            </div>
+        </section>
 
     <!-- Footer -->
     <footer class="bg-dark text-light py-4 border-top">
@@ -359,6 +637,84 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script>
+        function logout() {
+            fetch('/logout', { method: 'POST' })
+                .then(() => {
+                    window.location.href = '/'; // Redirect ke halaman utama
+                })
+                .catch(err => {
+                    console.error("Logout failed:", err);
+                });
+        }
+    </script>
+    <script>
+        // Menyuntikkan variabel userEmail ke dalam JavaScript
+        const userEmail = "<%= username || '' %>";
+
+        function checkLogin(event) {
+            if (!userEmail) {
+                event.preventDefault(); // Cegah untuk melanjutkan ke halaman tujuan
+                // Tampilkan modal peringatan
+                $('#loginModal').modal('show');
+            }
+        }
+        
+    </script>
+    <script>
+        function showModal(event, title, content) {
+                if (event) event.preventDefault();
+
+                const modalTitle = document.getElementById('infoModalLabel');
+                const modalBody = document.querySelector('.modal-body'); // Pilih langsung elemen body modal
+
+                if (modalTitle) {
+                    modalTitle.innerText = title;
+
+                    const infoModal = new bootstrap.Modal(document.getElementById('infoModal'));
+                    infoModal.show();
+                } else {
+                    console.error("Elemen modal tidak ditemukan.");
+                }
+            }
+
+
+
+    </script>
+    <script>
+        document.getElementById('subscribeForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Mencegah form dari submit otomatis
+
+            const firstName = document.getElementById('firstName').value;
+            const email = document.getElementById('email').value;
+
+            // Kirim data ke server
+            fetch('/subscribe', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ firstName, email }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        alert('Subscription Successful!');
+                        // Clear form after submission
+                        document.getElementById('subscribeForm').reset();
+                    } else {
+                        alert(data.error || 'Error occurred');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Something went wrong');
+                });
+        });
+    </script>
+
+
 </body>
 
 </html>

@@ -14,7 +14,17 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="/"><strong>Seyuel Lifestyle</strong></a>
+            <a class="navbar-brand">
+                <img src="/assets/img/logo.png" alt="Logo" style="max-height: 70px; width: auto;">
+            </a>
+            <div class="navbar-title">
+                <strong>SEYUEL</strong>
+            </div>
+            <a class="navbar-halo" href="/">
+                <strong>
+                    <%= username ? `Halo, ${username}` : '' %>
+                </strong>
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -24,27 +34,36 @@
                     <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
+                            data-bs-toggle="dropdown" aria-expanded="false" onclick="checkLogin(event)">
                             Wellness
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="/pencarian">Calories</a></li>
-                            <li><a class="dropdown-item" href="/kalkulator">Nutrition Calculator</a></li>
-                            <li><a class="dropdown-item" href="/consul">Consultancy</a></li>
+                            <li><a class="dropdown-item" href="/pencarian" onclick="checkLogin(event)">Calories</a></li>
+                            <li><a class="dropdown-item" href="/kalkulator" onclick="checkLogin(event)">Nutrition
+                                    Calculator</a></li>
+                            <li><a class="dropdown-item" href="/consul" onclick="checkLogin(event)">Consultancy</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="">Daily Planner</a></li>
-                    <li class="nav-item"><a class="nav-link" href="">Notes</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/mark">Mark As Done</a></li>
-                    <li class="nav-item ms-3">
-                        <a class="nav-link" href="/login"><button type="submit"
-                                class="btn btn-primary">Login</button></a>
+                    <li class="nav-item"><a class="nav-link" href="/planner" onclick="checkLogin(event)">Daily Planner</a>
                     </li>
+                    <li class="nav-item"><a class="nav-link" href="/notes" onclick="checkLogin(event)">Notes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/mark" onclick="checkLogin(event)">Mark As Done</a></li>
+                    <% if (isAdmin) { %>
+                        <li class="nav-item"><a class="nav-link" href="/admin">Admin Dashboard</a></li>
+                        <% } %>
+                            <li class="nav-item ms-3">
+                                <% if (username) { %>
+                                    <button class="btn btn-danger" onclick="logout()">Logout</button>
+                                    <% } else { %>
+                                        <a class="nav-link" href="/login">
+                                            <button type="submit" class="btn btn-primary">Login</button>
+                                        </a>
+                                        <% } %>
+                            </li>
                 </ul>
             </div>
         </div>
     </nav>
-
 
     <body ng-app="chatApp" ng-controller="chatController">
         <div class="container my-5">
