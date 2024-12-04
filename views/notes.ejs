@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,13 +9,11 @@
     <script>
         let notebooks = [];  // Array to hold the created notebooks
         let trashedNotebooks = [];  // Array to hold deleted notebooks
-
         // Function to toggle visibility of submenus
         function toggleSection(sectionId) {
             const section = document.getElementById(sectionId);
             section.classList.toggle('hidden');
         }
-
         // Show Create Notebook form
         function showCreateNotebook() {
             const mainContent = document.getElementById('main-content');
@@ -37,22 +36,18 @@
                 </div>
             `;
         }
-
         // Save new notebook to the list
         function saveNotebook() {
             const title = document.getElementById('notebook-title').value;
             const content = document.getElementById('notebook-content').value;
-
             if (title && content) {
                 const notebook = {
                     title: title,
                     content: content
                 };
-
                 notebooks.push(notebook); // Save to notebooks array
                 alert('Notebook saved!');
                 renderNotebooks(); // Re-render the list of notebooks
-
                 // Clear fields and show "My Notebooks"
                 document.getElementById('notebook-title').value = '';
                 document.getElementById('notebook-content').value = '';
@@ -61,12 +56,10 @@
                 alert('Please fill in both title and content');
             }
         }
-
         // Render the notebooks list under "My Notebooks"
         function renderNotebooks() {
             const notebooksList = document.getElementById('my-notebooks-list');
             notebooksList.innerHTML = ''; // Clear existing list
-
             notebooks.forEach((notebook, index) => {
                 const notebookElement = document.createElement('div');
                 notebookElement.classList.add('flex', 'flex-col', 'p-4', 'bg-white', 'rounded-lg', 'shadow-md', 'hover:bg-gray-50', 'cursor-pointer', 'space-y-4');
@@ -81,7 +74,6 @@
                 notebooksList.appendChild(notebookElement);
             });
         }
-
         // Open a notebook to view and edit its content
         function openNotebook(index) {
             const notebook = notebooks[index];
@@ -96,7 +88,6 @@
                 </div>
             `;
         }
-
         // Save edited content of the notebook
         function saveEditedNotebook(index) {
             const updatedContent = document.getElementById('notebook-content-edit').value;
@@ -108,7 +99,6 @@
                 alert('Please write something in the notebook.');
             }
         }
-
         // Delete a notebook from the list and move it to trash
         function deleteNotebook(index) {
             if (confirm('Are you sure you want to delete this notebook?')) {
@@ -119,7 +109,6 @@
                 alert('Notebook moved to Trash!');
             }
         }
-
         // Show the "My Notebooks" section
         function showMyNotebooks() {
             const mainContent = document.getElementById('main-content');
@@ -129,7 +118,6 @@
             `;
             renderNotebooks(); // Render the notebooks list
         }
-
         // Show the "Trash" section
         function showTrash() {
             const mainContent = document.getElementById('main-content');
@@ -139,12 +127,10 @@
             `;
             renderTrashedNotebooks(); // Render trashed notebooks list
         }
-
-         // Render trashed notebooks list
-         function renderTrashedNotebooks() {
+        // Render trashed notebooks list
+        function renderTrashedNotebooks() {
             const trashedNotebooksList = document.getElementById('trashed-notebooks-list');
             trashedNotebooksList.innerHTML = ''; // Clear existing list
-
             trashedNotebooks.forEach((notebook, index) => {
                 const notebookElement = document.createElement('div');
                 notebookElement.classList.add('flex', 'flex-col', 'p-4', 'bg-white', 'rounded-lg', 'shadow-md', 'hover:bg-gray-50', 'cursor-pointer', 'space-y-4');
@@ -159,7 +145,6 @@
                 trashedNotebooksList.appendChild(notebookElement);
             });
         }
-
         // Restore a notebook from Trash back to My Notebooks
         function restoreNotebook(index) {
             const notebook = trashedNotebooks.splice(index, 1)[0]; // Remove from trash
@@ -168,7 +153,6 @@
             renderTrashedNotebooks(); // Re-render the trash list
             alert('Notebook restored!');
         }
-
         // Permanently delete a notebook from Trash
         function permanentlyDeleteNotebook(index) {
             if (confirm('Are you sure you want to permanently delete this notebook?')) {
@@ -177,64 +161,74 @@
                 alert('Notebook permanently deleted!');
             }
         }
-
     </script>
 </head>
+
 <body class="bg-gray-100">
     <div class="flex">
         <!-- Sidebar -->
         <div class="fixed left-0 top-0 w-64 h-screen bg-white shadow-lg overflow-y-auto">
             <!-- Logo Section -->
             <div class="flex items-center p-4 border-b border-gray-200">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600 mr-2" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
                 <h1 class="text-xl font-bold text-gray-800">MyNotes</h1>
             </div>
-
             <!-- Navigation Sections -->
             <nav class="py-4">
                 <!-- Notebooks Section -->
                 <div>
-                    <div onclick="toggleSection('notebooks-submenu')" class="flex items-center px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    <div onclick="toggleSection('notebooks-submenu')"
+                        class="flex items-center px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-gray-500" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                         </svg>
                         <span class="font-medium text-gray-700">Notebooks</span>
                     </div>
                     <div id="notebooks-submenu" class="ml-8 mt-2 space-y-2">
-                        <div onclick="showCreateNotebook()" class="flex items-center hover:bg-gray-100 px-2 py-1 rounded cursor-pointer">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        <div onclick="showCreateNotebook()"
+                            class="flex items-center hover:bg-gray-100 px-2 py-1 rounded cursor-pointer">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-blue-500" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                             </svg>
                             <span>Create Notebook</span>
                         </div>
-                        <div onclick="showMyNotebooks()" class="flex items-center hover:bg-gray-100 px-2 py-1 rounded cursor-pointer">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                        <div onclick="showMyNotebooks()"
+                            class="flex items-center hover:bg-gray-100 px-2 py-1 rounded cursor-pointer">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-green-500" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                             </svg>
                             <span>My Notebooks</span>
                         </div>
                     </div>
                 </div>
-
                 <!-- Trash Section -->
                 <div>
                     <div onclick="showTrash()" class="flex items-center px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3H5a1 1 0 00-.707.293l-.707.707a1 1 0 00-.293.707V7a1 1 0 001 1h14a1 1 0 001-1V5a1 1 0 00-.293-.707l-.707-.707A1 1 0 0019 3h-4z" />
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-gray-500" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3H5a1 1 0 00-.707.293l-.707.707a1 1 0 00-.293.707V7a1 1 0 001 1h14a1 1 0 001-1V5a1 1 0 00-.293-.707l-.707-.707A1 1 0 0019 3h-4z" />
                         </svg>
                         <span class="font-medium text-gray-700">Trash</span>
                     </div>
                 </div>
             </nav>
         </div>
-
         <!-- Main Content Area -->
         <div id="main-content" class="ml-64 flex-1 min-h-screen bg-gray-50 p-8">
             <!-- Dynamic content will appear here -->
         </div>
     </div>
 </body>
+
 </html>
-    

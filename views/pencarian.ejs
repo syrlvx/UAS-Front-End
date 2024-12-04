@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="nutritionApp">
+<html lang="en" ng-app="pencarianApp">
 
 <head>
     <meta charset="UTF-8">
@@ -65,8 +65,7 @@
     </div>
 </nav>
 
-<body ng-app="nutritionApp" ng-controller="NutritionController">
-
+<body ng-app="pencarianApp" ng-controller="PencarianController">
     <div class="container mt-5">
         <!-- Judul -->
         <h2 class="text-center mb-5">Pencarian Informasi Kalori</h2>
@@ -85,14 +84,14 @@
                 </div>
                 <div class="col-12 mb-5">
                     <ul class="list-group">
-                        <li class="list-group-item d-flex align-items-center" ng-repeat="item in hasilPencarian">
-                            <img ng-src="{{ item.gambar }}" alt="Gambar {{ item.namaMakanan }}"
-                                class="img-thumbnail me-3" style="width: 80px; height: 80px; object-fit: cover;">
+                        <li class="list-group-item d-flex align-items-center clickable" ng-repeat="item in hasilPencarian"
+                            ng-click="tampilkanResep(item)">
+                            <img ng-src="{{ item.gambar }}" alt="Gambar {{ item.namaMakanan }}" class="img-thumbnail me-3"
+                                style="width: 80px; height: 80px; object-fit: cover;">
                             <div>
                                 <strong>{{ item.namaMakanan }}</strong><br>
                                 Kalori: {{ item.kalori }} kkal<br>
-                                Protein: {{ item.protein }} g, Karbohidrat: {{ item.karbohidrat }} g, Lemak: {{
-                                item.lemak }} g
+                                Protein: {{ item.protein }} g, Karbohidrat: {{ item.karbohidrat }} g, Lemak: {{ item.lemak }} g
                             </div>
                         </li>
                     </ul>
@@ -103,6 +102,21 @@
         <!-- Pesan jika tidak ada hasil -->
         <div ng-if="hasilPencarian.length == 0 && makanan" class="text-center mt-3">
             <p class="text-muted">Makanan tidak ditemukan.</p>
+        </div>
+    </div>
+
+    <!-- Modal Resep -->
+    <div class="modal" ng-class="{'show': tampilkanModalResep}">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Resep Membuat {{ resepDipilih.namaMakanan }}</h5>
+                    <button type="button" class="btn-close" aria-label="Close" ng-click="tutupModalResep()"></button>
+                </div>
+                <div class="modal-body">
+                    <p>{{ resepDipilih.resep }}</p>
+                </div>
+            </div>
         </div>
     </div>
 

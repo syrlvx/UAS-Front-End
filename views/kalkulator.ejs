@@ -62,6 +62,7 @@
         </div>
     </div>
 </nav>
+
 <body ng-controller="kalkulatorController">
     <div class="container mt-5">
         <h1 class="text-center text-primary mb-4">Health Calculators</h1>
@@ -113,7 +114,8 @@
                         <div class="mb-3">
                             <label for="activity" class="form-label">Activity Type</label>
                             <select id="activity" class="form-select" ng-model="calories.activity">
-                                <option ng-repeat="activity in activities" value="{{ activity.value }}">{{ activity.name}}
+                                <option ng-repeat="activity in activities" value="{{ activity.value }}">{{
+                                    activity.name}}
                                 </option>
                             </select>
                         </div>
