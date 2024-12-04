@@ -1,6 +1,6 @@
-const app = angular.module('loginApp', []);
+const app = angular.module('signupApp', []);
 
-app.controller('LoginController', ['$scope', '$http', function ($scope, $http) {
+app.controller('SignupController', ['$scope', '$http', function ($scope, $http) {
     $scope.user = {}; // Data user untuk form
     $scope.errorMessage = ''; // Pesan error dari backend
 
