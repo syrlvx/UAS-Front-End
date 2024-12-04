@@ -1,26 +1,60 @@
-// AngularJS Application
-angular.module('HealthyLifestyleApp', [])
-  .controller('CalculatorController', function($scope) {
-    $scope.weight = null;
-    $scope.height = null;
-    $scope.age = null;
-    $scope.gender = null;
-    $scope.activityLevel = "1.2";
-    $scope.calories = null;
+// AngularJS App Initialization
+const app = angular.module('kalkulatorApp', []);
 
-    $scope.calculateCalories = function() {
-      if ($scope.weight && $scope.height && $scope.age && $scope.gender) {
-        // Menghitung BMR (Basal Metabolic Rate)
-        let bmr;
-        if ($scope.gender === "male") {
-          bmr = 88.36 + (13.4 * $scope.weight) + (4.8 * $scope.height) - (5.7 * $scope.age);
-        } else {
-          bmr = 447.6 + (9.2 * $scope.weight) + (3.1 * $scope.height) - (4.3 * $scope.age);
-        }
-        // Menghitung kebutuhan kalori harian
-        $scope.calories = bmr * parseFloat($scope.activityLevel);
-      } else {
-        alert("Harap isi semua data!");
-      }
+app.controller('kalkulatorController', function ($scope) {
+    // BMI Calculator
+    $scope.bmi = {
+        height: null,
+        weight: null,
+        result: ''
     };
-  });
+
+    $scope.calculateBMI = function () {
+        const height = $scope.bmi.height / 100;
+        const weight = $scope.bmi.weight;
+        const bmi = (weight / (height * height)).toFixed(2);
+        if (bmi < 18.5) {
+            $scope.bmi.result = `Your BMI is ${bmi} (Underweight)`;
+        } else if (bmi < 24.9) {
+            $scope.bmi.result = `Your BMI is ${bmi} (Normal weight)`;
+        } else if (bmi < 29.9) {
+            $scope.bmi.result = `Your BMI is ${bmi} (Overweight)`;
+        } else {
+            $scope.bmi.result = `Your BMI is ${bmi} (Obesity)`;
+        }
+    };
+
+    // Calorie Burn Estimator
+    $scope.activities = [
+        { name: 'Walking', value: 4 },
+        { name: 'Running', value: 8 },
+        { name: 'Cycling', value: 6 }
+    ];
+
+    $scope.calories = {
+        activity: null,
+        duration: null,
+        result: ''
+    };
+
+    $scope.estimateCalories = function () {
+        const burned = ($scope.calories.activity * $scope.calories.duration).toFixed(2);
+        $scope.calories.result = `You burned approximately ${burned} calories.`;
+    };
+
+    // Macro Tracker
+    $scope.macros = {
+        protein: null,
+        carbs: null,
+        fats: null,
+        result: ''
+    };
+
+    $scope.trackMacros = function () {
+        const totalCalories =
+            ($scope.macros.protein * 4) +
+            ($scope.macros.carbs * 4) +
+            ($scope.macros.fats * 9);
+        $scope.macros.result = `You consumed ${totalCalories} calories today (Protein: ${$scope.macros.protein}g, Carbs: ${$scope.macros.carbs}g, Fats: ${$scope.macros.fats}g).`;
+    };
+});
