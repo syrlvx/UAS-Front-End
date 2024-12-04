@@ -2,6 +2,8 @@ const express = require("express");
 const bcrypt = require('bcrypt');
 const User = require('./model/user');
 const isAdmin = require('./middleware/isAdmin');
+const Article = require('./model/article');
+const Subscription = require('./model/subscription')
 const app = express();
 const expressLayouts = require("express-ejs-layouts");
 const port = 3000;
@@ -34,16 +36,25 @@ app.use(express.static("public"));
 app.use(express.json());
 
 
-
-
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
     const user = req.session.user || null;
     const isAdmin = user && user.role === "admin"; // Periksa apakah user adalah admin
-    res.render("index.ejs", { 
-        layout: false, 
-        username: user ? user.username : null,  // Kirimkan username
-        isAdmin 
-    });
+
+    try {
+        // Ambil artikel-artikel dari database
+        const articles = await Article.find();
+
+        // Render halaman dengan mengirimkan data artikel dan user info
+        res.render("index.ejs", { 
+            layout: false, 
+            username: user ? user.username : null,  // Kirimkan username
+            isAdmin,
+            articles // Kirimkan artikel-artikel ke view
+        });
+    } catch (err) {
+        console.error("Error fetching articles:", err);
+        res.status(500).send("Error fetching articles");
+    }
 });
 
 app.get("/pencarian", (req, res) => {
@@ -110,9 +121,38 @@ app.get("/mark", (req, res) => {
     });
 });
 
-app.get("/admin",isAdmin, (req, res) => {
-    res.render("admin.ejs",{layout:false});
+app.get("/admin", isAdmin, async (req, res) => {
+    try {
+        const users = await User.find(); // Ambil semua data pengguna dari database
+        res.render("admin.ejs", { layout: false, users }); // Kirim data pengguna ke template
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error fetching user data");
+    }
 });
+app.get("/artikel", isAdmin, async (req, res) => {
+    try {
+        const articles = await Article.find(); // Ambil semua data pengguna dari database
+        res.render("admin_artikel.ejs", { layout: false, articles }); // Kirim data pengguna ke template
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error fetching user data");
+    }
+});
+
+app.post('/deleteUser/:id', async (req, res) => {
+    try {
+        const userId = req.params.id;
+        await User.findByIdAndDelete(userId); // Pastikan menggunakan model yang sesuai dengan database Anda
+        res.redirect('/admin'); // Redirect ke halaman user setelah delete
+    } catch (error) {
+        console.error("Error deleting user:", error);
+        res.status(500).send("Failed to delete user");
+    }
+});
+
+
+
 
 app.get("/signup",(req, res) => {
     res.render("signup.ejs",{layout:false});
@@ -210,6 +250,32 @@ app.post('/logout', (req, res) => {
         }
         res.redirect('/'); // Redirect ke halaman utama setelah logout
     });
+});
+app.post('/subscribe', async (req, res) => {
+    const { firstName, email } = req.body;
+
+    try {
+        // Validasi apakah email sudah terdaftar
+        const existingSubscription = await Subscription.findOne({ email });
+
+        if (existingSubscription) {
+            return res.status(400).json({ error: 'Email already subscribed!' });
+        }
+
+        // Membuat entry baru untuk subscription
+        const newSubscription = new Subscription({
+            firstName,
+            email,
+        });
+
+        // Menyimpan ke database
+        await newSubscription.save();
+        res.status(201).json({ message: 'Subscription successful!' });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
 });
 
 app.listen(port, () => {
