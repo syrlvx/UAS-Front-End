@@ -159,6 +159,58 @@
     h4 {
       text-align: center;
     }
+    /* Modal Info */
+    .info-modal .modal-content {
+        background-color: #f8f9fa;
+        color: #333;
+        border: 2px solid #98b9f2;
+        border-radius: 8px;
+    }
+
+    .info-modal .modal-header {
+        background-color: #98b9f2;
+        color: white;
+    }
+
+    .info-modal .modal-body {
+        padding: 20px;
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+
+    /* Modal Login */
+    .login-modal .modal-content {
+    background-color: #ffe4e1;
+    color: #a94442;
+    border: 2px solid #e26a6a;
+    border-radius: 8px;
+    padding: 0; /* Menghapus padding bawaan */
+    }
+
+    .login-modal .modal-header,
+    .login-modal .modal-body,
+    .login-modal .modal-footer {
+        margin: 0; /* Menghapus margin bawaan */
+        padding: 15px; /* Konsisten pada semua bagian */
+        background-color: #ffe4e1; /* Selaraskan warna latar belakang */
+        border: none; /* Menghapus border bawaan */
+    }
+
+    .login-modal .modal-header {
+        background-color: #e26a6a; /* Warna khusus header */
+        color: rgb(255, 255, 255); /* Warna teks */
+        border-bottom: 1px solid #e26a6a; /* Jika ingin garis pemisah */
+    }
+
+    .login-modal .modal-footer .btn-primary {
+        background-color: #ff0800;
+        border-color: #ff0800;
+    }
+
+    .login-modal .modal-footer .btn-primary:hover {
+        background-color: #d9534f;
+        border-color: #d9534f;
+    }
 
     .card {
       border-color: #98b9f2;
@@ -177,8 +229,8 @@
     }
 
     .btn-primary {
-      background-color: #7ca6ed;
-      border-color: rgb(89, 135, 204);
+      background-color: rgb(66, 107, 169);
+      border-color: rgb(66, 107, 169);
     }
 
     .btn-primary:hover {
@@ -262,7 +314,7 @@
     .accordion-item {
       border: 1px solid #ddd;
       border-radius: 5px;
-      margin-bottom: 5px;
+      margin-bottom: 10px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
