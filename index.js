@@ -139,6 +139,35 @@ app.get("/artikel", isAdmin, async (req, res) => {
         res.status(500).send("Error fetching user data");
     }
 });
+app.get("/adminpencarian", isAdmin, async (req, res) => {
+    try {
+        const articles = await Article.find(); // Ambil semua data pengguna dari database
+        res.render("admin_pencarian.ejs", { layout: false, articles }); // Kirim data pengguna ke template
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error fetching user data");
+    }
+});
+
+app.get("/adminconsul", isAdmin, async (req, res) => {
+    try {
+        const articles = await Article.find(); // Ambil semua data pengguna dari database
+        res.render("admin_consul.ejs", { layout: false, articles }); // Kirim data pengguna ke template
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error fetching user data");
+    }
+});
+
+app.get("/adminsubscribe", isAdmin, async (req, res) => {
+    try {
+        const users = await User.find(); // Ambil semua data pengguna dari database
+        res.render("admin_subscribe.ejs", { layout: false, users }); // Kirim data pengguna ke template
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error fetching user data");
+    }
+});
 
 app.post('/deleteUser/:id', async (req, res) => {
     try {
@@ -150,9 +179,6 @@ app.post('/deleteUser/:id', async (req, res) => {
         res.status(500).send("Failed to delete user");
     }
 });
-
-
-
 
 app.get("/signup",(req, res) => {
     res.render("signup.ejs",{layout:false});
