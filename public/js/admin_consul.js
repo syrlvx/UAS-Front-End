@@ -1,6 +1,8 @@
-var app = angular.module('consulApp', []);
+let menuicn = document.querySelector(".menuicn");
+let nav = document.querySelector(".navcontainer");
+var app = angular.module('adminconsulApp', []);
 
-app.controller('ConsulController', function($scope) {
+app.controller('AdminconsulController', function($scope) {
     $scope.messages = [];
     
     $scope.newMessage = "";
