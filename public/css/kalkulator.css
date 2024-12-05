@@ -11,10 +11,13 @@
     }
 
     .navbar {
+        display: flex;
+        justify-content: space-between;
         background: linear-gradient(45deg, rgb(66, 107, 169), #98b9f2);
         padding: 15px 0;
         border-bottom: 2px solid #7fd8ecfb;
         margin-bottom: 0px;
+        height: 90px;
     }
 
     .navbar .navbar-nav {
@@ -25,7 +28,22 @@
         font-weight: bold;
         font-size: 1.8rem;
         color: white !important;
-        margin-right: 100px;
+        margin-right: 10px;
+        margin-left: -10px;
+    }
+
+    .navbar-title {
+        font-weight: bold;
+        font-size: 1.8rem;
+        color: white !important;
+        margin-right: 180px;
+        margin-left: 0;
+    }
+
+    .navbar-halo {
+        text-decoration: none;
+        color: white;
+        font-size: 1.2rem;
     }
 
     .navbar .nav-link {

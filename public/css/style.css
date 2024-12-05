@@ -248,6 +248,65 @@
       border-color: rgb(89, 135, 204);
     }
 
+    #health-test {
+    background-color: white; /* Light background for the section */
+    padding: 130px 0;
+}
+
+#health-test .card {
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Smooth hover effects */
+}
+
+#health-test .card:hover {
+    transform: scale(1.05); /* Slight zoom effect */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1); /* Enhanced shadow on hover */
+}
+
+#health-test .card-body {
+    padding: 25px;
+    background-color: #fff; /* White background for the card body */
+    text-align: center;
+}
+
+#health-test .card-title {
+    font-size: 1.5rem;
+    color: rgb(66, 107, 169)!important;/* Primary color for the title */
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+#health-test .card-text {
+    font-size: 1rem;
+    color: #6c757d; /* Muted text for description */
+    margin-bottom: 20px;
+}
+
+#health-test .btn {
+    padding: 10px 30px;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    border-radius: 25px; /* Rounded corners for the button */
+}
+
+#health-test .btn-danger {
+    background-color: rgb(66, 107, 169); /* Red button for emphasis */
+    color: white;
+    border: none;
+}
+
+#health-test .btn-danger:hover {
+    background-color: #7ca6ed;/* Darker red on hover */
+}
+
+#healthTestModal .modal-content {
+  border-radius: 10px;
+  padding: 20px;
+}
+
+#healthTestForm .form-select {
+  margin-bottom: 15px;
+}
+
     #testimonials {
       background-color: #f8f9fa;
       padding: 60px 20px;

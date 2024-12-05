@@ -20,26 +20,24 @@
 
     <!-- for header part -->
     <header>
-
         <div class="logosec">
+            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210182541/Untitled-design-(30).png"
+                class="icn menuicn" id="menuicn" alt="menu-icon">
             <a class="logo">
                 <img src="/assets/img/logo.png" alt="Logo" style="max-height: 60px; width: auto;">
             </a>
             <div class="logo-title">
                 <strong>SEYUEL</strong>
             </div>
-            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210182541/Untitled-design-(30).png"
-                class="icn menuicn" id="menuicn" alt="menu-icon">
         </div>
-
+    
         <div class="searchbar">
             <input type="text" placeholder="Search">
             <div class="searchbtn">
-                <img src="https://cdn-icons-png.flaticon.com/256/3917/3917754.png" class="icn srchicn"
-                    alt="search-icon">
+                <img src="https://cdn-icons-png.flaticon.com/256/3917/3917754.png" class="icn srchicn" alt="search-icon">
             </div>
         </div>
-
+    
         <div class="message">
             <div class="circle"></div>
             <img src="https://cdn-icons-png.flaticon.com/512/1827/1827504.png" class="icn" alt="">
@@ -48,25 +46,28 @@
                     class="dpicn" alt="dp">
             </div>
         </div>
+    
     </header>
-
+    
     <div class="main-container">
         <div class="navcontainer">
             <nav class="nav">
                 <div class="nav-upper-options">
                     <div class="nav-option option1">
-                        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210182148/Untitled-design-(29).png"
-                            class="nav-img" alt="dashboard">
-                        <h3> Dashboard</h3>
+                        <a href="/admin" class="nav-link">
+                            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210182148/Untitled-design-(29).png"
+                                class="nav-img" alt="dashboard">
+                            <h3> Dashboard</h3>
+                        </a>
                     </div>
-
+    
                     <div class="option2 nav-option">
                         <a href="/" class="nav-link">
                             <img src="https://cdn-icons-png.flaticon.com/512/25/25694.png" class="nav-img" alt="home">
                             <h3> Home</h3>
                         </a>
                     </div>
-
+    
                     <div class="nav-option option3">
                         <a href="/artikel" class="nav-link">
                             <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183323/10.png"
@@ -74,7 +75,7 @@
                             <h3> Article</h3>
                         </a>
                     </div>
-
+    
                     <div class="nav-option option5">
                         <a href="/adminpencarian" class="nav-link">
                             <img src="https://cdn-icons-png.flaticon.com/256/651/651162.png" class="nav-img"
@@ -82,7 +83,7 @@
                             <h3>Pencarian</h3>
                         </a>
                     </div>
-
+    
                     <div class="nav-option option5">
                         <a href="/adminconsul" class="nav-link">
                             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqLOtmrO7lQhzu0Kc4lnwcncBpHz_3TTqPjQ&s"
@@ -90,21 +91,20 @@
                             <h3> Consul</h3>
                         </a>
                     </div>
-
+    
                     <div class="nav-option option6">
                         <a href="/adminsubscribe" class="nav-link">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSbOkhSoA9deslnxrfScuvB3RFLgar7UXCiQ&s"
-                            class="nav-img" alt="subscribe">
-                        <h3>Subscribe</h3>
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSbOkhSoA9deslnxrfScuvB3RFLgar7UXCiQ&s"
+                                class="nav-img" alt="subscribe">
+                            <h3>Subscribe</h3>
                         </a>
                     </div>
-
+    
                     <div class="nav-option logout " onclick="logout()">
-                        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183321/7.png"
-                            class="nav-img" alt="logout">
+                        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183321/7.png" class="nav-img"
+                            alt="logout">
                         <h3>Logout</h3>
                     </div>
-
                 </div>
             </nav>
         </div>
@@ -157,42 +157,124 @@
                 </div>
             </div>
                 <div class="container my-5">
-                    <!-- Chat Room Header -->
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h3 class="text-primary">Konsultasi dengan Dokter</h3>
-                        <button class="btn btn-outline-secondary" ng-click="clearMessages()">Clear Chat</button>
-                    </div>
-            
-                    <!-- Chat Messages Display -->
-                    <div class="chat-box bg-light p-3 mb-4" style="height: 300px; overflow-y: auto;">
-                        <div class="chat-message" ng-repeat="message in messages">
-                            <div class="d-flex"
-                                ng-class="{'justify-content-start': message.sender === 'doctor', 'justify-content-end': message.sender === 'user'}">
-                                <div class="p-2 bg-{{message.sender === 'user' ? 'primary' : 'success'}} text-white rounded">
-                                    <p class="m-0">{{message.text}}</p>
+                    <div class="row">
+                        <!-- Chat Room -->
+                        <div class="col-md-8">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h3 class="text-primary">Konsultasi dengan Dokter</h3>
+                                <button class="btn btn-outline-secondary" ng-click="clearMessages()">Clear Chat</button>
+                            </div>
+                
+                            <div class="chat-box bg-light p-3 mb-4" style="height: 300px; overflow-y: auto;">
+                                <div class="chat-message" ng-repeat="message in messages">
+                                    <div class="d-flex"
+                                        ng-class="{'justify-content-start': message.sender === 'doctor', 'justify-content-end': message.sender === 'user'}">
+                                        <div class="p-2 bg-{{message.sender === 'user' ? 'primary' : 'success'}} text-white rounded">
+                                            <p class="m-0">{{message.text}}</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                
+                            <div class="input-group">
+                                <input type="text" class="form-control" ng-model="newMessage" placeholder="Ketik pesan..."
+                                    ng-disabled="!selectedUser" ng-keypress="onKeyPress($event)" />
+                                <button class="btn btn-primary" ng-click="sendMessage()" ng-disabled="!selectedUser">Kirim</button>
+                            </div>
+                        </div>
+                
+                        <!-- User List -->
+                        <div class="col-md-4">
+                            <h5 class="text-primary mb-3">Semua User</h5>
+                            <ul class="list-group">
+                                <li class="list-group-item d-flex justify-content-between align-items-center"
+                                    ng-repeat="user in allUsers" ng-click="selectUser(user)"
+                                    ng-class="{'active': selectedUser === user}">
+                                    {{user.username}}
+                                    <span class="badge bg-success" ng-if="user.role === 'admin'">Admin</span>
+                                </li>
+                            </ul>
                         </div>
                     </div>
-            
-                    <!-- Input for new message -->
-                    <div class="input-group">
-                        <input type="text" class="form-control" ng-model="newMessage" placeholder="Ketik pesan..."
-                            ng-keypress="onKeyPress($event)" />
-                        <button class="btn btn-primary" ng-click="sendMessage()">Kirim</button>
-                    </div>
                 </div>
+            
+
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/angular@1.8.2/angular.min.js"></script>
-        <script src="/js/admin_consul.js"></script>
+        <script>
+            var app = angular.module('adminconsulApp', []);
+
+            app.controller('AdminconsulController', function ($scope, $http) {
+                $scope.users = [];         // Daftar user yang terkait dengan chat
+                $scope.allUsers = [];      // Semua user di sistem
+                $scope.selectedUser = null;
+                $scope.messages = [];
+                $scope.newMessage = "";
+
+                // Mengambil semua user dari server
+                $http.get('/api/users')
+                    .then(function (response) {
+                        $scope.allUsers = response.data;
+                    })
+                    .catch(function (error) {
+                        console.error("Error fetching all users:", error);
+                    });
+
+                // Memilih user tertentu
+                $scope.selectUser = function (user) {
+                    $scope.selectedUser = user;
+                    $scope.messages = []; // Reset pesan untuk user yang baru
+                    $http.get(`/api/chats/${user._id}`)
+                        .then(function (response) {
+                            $scope.messages = response.data;
+                        })
+                        .catch(function (error) {
+                            console.error("Error fetching messages:", error);
+                        });
+                };
+
+                // Mengirim pesan ke user yang dipilih
+                $scope.sendMessage = function () {
+                    if ($scope.newMessage.trim() !== "") {
+                        const message = {
+                            sender: 'admin',
+                            text: $scope.newMessage
+                        };
+
+                        $scope.messages.push(message);
+
+                        // Simpan pesan ke server
+                        $http.post(`/api/chats/${$scope.selectedUser._id}`, message)
+                            .then(function () {
+                                $scope.newMessage = "";
+                            })
+                            .catch(function (error) {
+                                console.error("Error sending message:", error);
+                            });
+                    }
+                };
+
+                $scope.onKeyPress = function (event) {
+                    if (event.key === 'Enter') {
+                        $scope.sendMessage();
+                    }
+                };
+
+                // Menghapus semua pesan
+                $scope.clearMessages = function () {
+                    $scope.messages = [];
+                };
+            });
+
+        </script>
         <script>
             function logout() {
                 fetch('/logout', { method: 'POST' })
                     .then(() => {
                         window.location.href = '/'; // Redirect ke halaman utama
                     })
-                    .catch(err => {
+                    .catch(err => { 
                         console.error("Logout failed:", err);
                     });
             }

@@ -1,6 +1,5 @@
 const app = angular.module('signupApp', []);
-
-app.controller('SignupController', ['$scope', '$http', function ($scope, $http) {
+app.controller('SignupController', ['$scope', '$http', '$window', function ($scope, $http, $window) {
     $scope.user = {}; // Data user untuk form
     $scope.errorMessage = ''; // Pesan error dari backend
 
@@ -12,6 +11,9 @@ app.controller('SignupController', ['$scope', '$http', function ($scope, $http) 
                 if (response.data.success) {
                     alert('Pendaftaran berhasil!');
                     $scope.user = {}; // Reset form jika berhasil
+
+                    // Redirect ke halaman login setelah pendaftaran berhasil
+                    $window.location.href = '/login';  // Mengarahkan ke halaman login
                 }
             })
             .catch(function (error) {

@@ -381,3 +381,257 @@ header {
     cursor: pointer;
     /* Memberikan efek pointer saat hover */
 }
+
+.food-form-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+    /* Tengah halaman */
+    padding: 20px;
+    background-color: #f9f9f9;
+    /* Warna latar belakang form */
+    border: 1px solid #ccc;
+    /* Batas form */
+    border-radius: 8px;
+    /* Sudut membulat */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Efek bayangan */
+}
+
+.food-form-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    /* Warna teks heading */
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.food-form-container label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #555;
+    /* Warna label */
+    font-weight: 500;
+}
+
+.food-form-container input[type="text"],
+.food-form-container input[type="number"],
+.food-form-container input[type="url"],
+.food-form-container textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.food-form-container textarea {
+    resize: none;
+    /* Nonaktifkan resize */
+    height: 100px;
+    /* Tinggi textarea */
+}
+
+.food-form-container button {
+    width: 100%;
+    /* Tombol lebar penuh */
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background-color:rgb(66, 107, 169);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.food-form-container button:hover {
+    background-color: #a8d5f4;
+    /* Warna tombol saat hover */
+}
+
+.food-form-container input:focus,
+.food-form-container textarea:focus {
+    outline: none;
+    border-color: #007bff;
+    /* Warna saat fokus */
+    box-shadow: 0 0 3px rgba(0, 123, 255, 0.5);
+}
+
+/* Container for the form */
+.article-form-container {
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: rgb(66, 107, 169);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Title of the form */
+.article-form-container h2 {
+    text-align: center;
+    color: #ffffff;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Style for the form itself */
+.article-form-container form {
+    display: grid;
+    gap: 20px;
+}
+
+/* Label styles */
+.article-form-container label {
+    font-size: 14px;
+    color: #ffffff;
+}
+
+/* Input and textarea fields */
+.article-form-container input[type="text"],
+.article-form-container textarea,
+.article-form-container input[type="url"] {
+    width: 100%;
+    padding: 10px;
+    border: 3px solid #a8d5f4;
+    border-radius: 4px;
+}
+
+/* Focus state for inputs and textareas */
+.article-form-container input[type="text"]:focus,
+.article-form-container textarea:focus,
+.article-form-container input[type="url"]:focus {
+    border-color: #a8d5f4;
+    outline: none;
+}
+
+/* Button styles */
+.article-form-container button {
+    padding: 10px 15px;
+    background-color: #a8d5f4;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: transform 0.3s ease;
+}
+
+/* Hover effect for the button */
+.article-form-container button:hover {
+    background-color: #a8d5f4;
+    transform: scale(1.1);
+}
+
+/* Textarea height */
+.article-form-container textarea {
+    height: 100px;
+}
+
+/* Disabled button state */
+.article-form-container button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Style untuk tabel */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+}
+
+/* Style untuk border tabel */
+table,
+th,
+td {
+    border: 1px solid #ddd;
+}
+
+/* Style untuk header tabel */
+thead {
+    background-color: #a8d5f4;
+    color: white;
+}
+
+td a,
+td form {
+    display: block;
+    /* Menampilkan elemen dalam satu kolom vertikal */
+    margin-bottom: 10px;
+    /* Memberikan jarak antar tombol */
+}
+
+/* Style untuk sel header */
+th {
+    padding: 12px 15px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Style untuk sel body tabel */
+td {
+    padding: 10px;
+    text-align: center;
+}
+
+/* Warna baris tabel yang berbeda */
+tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Hover effect untuk baris tabel */
+tbody tr:hover {
+    background-color: #d1e7dd;
+    cursor: pointer;
+}
+
+/* Style untuk tombol dalam tabel */
+button {
+    padding: 10px 15px;
+    background-color: rgb(66, 107, 169);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    margin: 0 5px;
+}
+
+button:hover {
+    background-color: #a8d5f4;
+}
+
+button:active {
+    background-color: #a8d5f4;
+}
+
+/* Style untuk link dalam tabel */
+a {
+    color: #a8d5f4;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Form delete tombol */
+form button {
+    background-color: #e74c3c;
+}
+
+form button:hover {
+    background-color: #c0392b;
+}

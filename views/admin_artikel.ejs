@@ -10,11 +10,11 @@
     <link rel="stylesheet" href="/css/admin_artikel.css">
     <link rel="stylesheet" href="/css/responsive.css">
 </head>
+
 <body>
 
     <!-- for header part -->
     <header>
-
         <div class="logosec">
             <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210182541/Untitled-design-(30).png"
                 class="icn menuicn" id="menuicn" alt="menu-icon">
@@ -50,33 +50,36 @@
             <nav class="nav">
                 <div class="nav-upper-options">
                     <div class="nav-option option1">
-                        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210182148/Untitled-design-(29).png"
-                            class="nav-img" alt="dashboard">
-                        <h3> Dashboard</h3>
+                        <a href="/admin" class="nav-link">
+                            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210182148/Untitled-design-(29).png"
+                                class="nav-img" alt="dashboard">
+                            <h3> Dashboard</h3>
+                        </a>
                     </div>
-                    
+
                     <div class="option2 nav-option">
                         <a href="/" class="nav-link">
                             <img src="https://cdn-icons-png.flaticon.com/512/25/25694.png" class="nav-img" alt="home">
                             <h3> Home</h3>
                         </a>
                     </div>
-                    
+
                     <div class="nav-option option3">
                         <a href="/artikel" class="nav-link">
-                            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183323/10.png" class="nav-img"
-                                alt="article">
+                            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183323/10.png"
+                                class="nav-img" alt="article">
                             <h3> Article</h3>
                         </a>
                     </div>
-                    
+
                     <div class="nav-option option5">
                         <a href="/adminpencarian" class="nav-link">
-                            <img src="https://cdn-icons-png.flaticon.com/256/651/651162.png" class="nav-img" alt="pencarian">
+                            <img src="https://cdn-icons-png.flaticon.com/256/651/651162.png" class="nav-img"
+                                alt="pencarian">
                             <h3>Pencarian</h3>
                         </a>
                     </div>
-                    
+
                     <div class="nav-option option5">
                         <a href="/adminconsul" class="nav-link">
                             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqLOtmrO7lQhzu0Kc4lnwcncBpHz_3TTqPjQ&s"
@@ -84,12 +87,12 @@
                             <h3> Consul</h3>
                         </a>
                     </div>
-                    
+
                     <div class="nav-option option6">
                         <a href="/adminsubscribe" class="nav-link">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSbOkhSoA9deslnxrfScuvB3RFLgar7UXCiQ&s"
-                            class="nav-img" alt="subscribe">
-                        <h3>Subscribe</h3>
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSbOkhSoA9deslnxrfScuvB3RFLgar7UXCiQ&s"
+                                class="nav-img" alt="subscribe">
+                            <h3>Subscribe</h3>
                         </a>
                     </div>
 
@@ -150,66 +153,160 @@
                 </div>
             </div>
 
-            <table border="1" cellspacing="0" cellpadding="10">
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Judul</th>
-                        <th>Subjudul</th>
-                        <th>Paragraf 1</th>
-                        <th>Paragraf 2</th>
-                        <th>Paragraf 3</th>
-                        <th>Image 1</th>
-                        <th>Image 2</th>
-                        <th>Image 3</th>
-                        <th>Actions</th> <!-- Untuk Edit/Hapus -->
-                    </tr>
-                </thead>
-                <tbody>
-                    <% articles.forEach((article, index)=> { %>
+            <div>
+                <div class="article-form-container">
+                    <h2>New Article</h2>
+                    <form action="/addArticle" method="POST">
+                        <div>
+                            <label for="judul">Judul:</label>
+                            <input type="text" id="judul" name="judul" required>
+                        </div>
+                        <div>
+                            <label for="subjudul">Subjudul:</label>
+                            <input type="text" id="subjudul" name="subjudul" required>
+                        </div>
+                        <div>
+                            <label for="paragraf1">Paragraf 1:</label>
+                            <textarea id="paragraf1" name="paragraf1" required></textarea>
+                        </div>
+                        <div>
+                            <label for="paragraf2">Paragraf 2:</label>
+                            <textarea id="paragraf2" name="paragraf2"></textarea>
+                        </div>
+                        <div>
+                            <label for="paragraf3">Paragraf 3:</label>
+                            <textarea id="paragraf3" name="paragraf3"></textarea>
+                        </div>
+                        <div>
+                            <label for="image1">URL Image 1:</label>
+                            <input type="url" id="image1" name="image1" placeholder="https://example.com/image1.jpg">
+                        </div>
+                        <div>
+                            <label for="image2">URL Image 2:</label>
+                            <input type="url" id="image2" name="image2" placeholder="https://example.com/image2.jpg">
+                        </div>
+                        <div>
+                            <label for="image3">URL Image 3:</label>
+                            <input type="url" id="image3" name="image3" placeholder="https://example.com/image3.jpg">
+                        </div>
+                        <div>
+                            <button type="submit">Add New Article</button>
+                        </div>
+                    </form>
+                </div>
+                <table border="1" cellspacing="0" cellpadding="10">
+                    <thead>
                         <tr>
-                            <td>
-                                <%= index + 1 %>
-                            </td>
-                            <td>
-                                <%= article.judul %>
-                            </td>
-                            <td>
-                                <%= article.subjudul %>
-                            </td>
-                            <td>
-                                <%= article.paragraf1 %>
-                            </td>
-                            <td>
-                                <%= article.paragraf2 %>
-                            </td>
-                            <td>
-                                <%= article.paragraf3 %>
-                            </td>
-                            <td>
-                                <a href="<%= article.image1 %>" target="_blank">View Image 1</a>
-                            </td>
-                            <td>
-                                <a href="<%= article.image2 %>" target="_blank">View Image 2</a>
-                            </td>
-                            <td>
-                                <a href="<%= article.image3 %>" target="_blank">View Image 3</a>
-                            </td>
-                            <td>
-                                <form action="/deleteArticle/<%= article._id %>" method="POST" style="display:inline;">
-                                    <button type="submit" onclick="return confirm('Are you sure you want to delete this article?')">
-                                        Delete
-                                    </button>
-                                </form>
-                                <a href="/editArticle/<%= article._id %>">
-                                    <button>Edit</button>
-                                </a>
-                            </td>
+                            <th>No</th>
+                            <th>Judul</th>
+                            <th>Subjudul</th>
+                            <th>Paragraf 1</th>
+                            <th>Paragraf 2</th>
+                            <th>Paragraf 3</th>
+                            <th>Image 1</th>
+                            <th>Image 2</th>
+                            <th>Image 3</th>
+                            <th>Actions</th> <!-- Untuk Edit/Hapus -->
                         </tr>
-                        <% }); %>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <% articles.forEach((article, index)=> { %>
+                            <tr>
+                                <td>
+                                    <%= index + 1 %>
+                                </td>
+                                <td>
+                                    <%= article.judul %>
+                                </td>
+                                <td>
+                                    <%= article.subjudul %>
+                                </td>
+                                <td>
+                                    <%= article.paragraf1 %>
+                                </td>
+                                <td>
+                                    <%= article.paragraf2 %>
+                                </td>
+                                <td>
+                                    <%= article.paragraf3 %>
+                                </td>
+                                <td>
+                                    <a href="<%= article.image1 %>" target="_blank">View Image 1</a>
+                                </td>
+                                <td>
+                                    <a href="<%= article.image2 %>" target="_blank">View Image 2</a>
+                                </td>
+                                <td>
+                                    <a href="<%= article.image3 %>" target="_blank">View Image 3</a>
+                                </td>
+                                <td>
+                                    <button onclick="openModal('<%= article._id %>', '<%= article.judul %>', '<%= article.subjudul %>', 
+                                        '<%= article.paragraf1 %>', '<%= article.paragraf2 %>', '<%= article.paragraf3 %>', 
+                                        '<%= article.image1 %>', '<%= article.image2 %>', '<%= article.image3 %>')">
+                                        Edit
+                                    </button>
+                                    <form action="/deleteArticle/<%= article._id %>" method="POST" style="display:inline;">
+                                        <button type="submit" onclick="return confirm('Are you sure you want to delete this article?')"
+                                            style="margin-top: 10px;">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <% }); %>
+                    </tbody>
+                </table>
             </div>
+
+            <div id="editModal" class="modal"
+                style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center; display: none;">
+                <div class="modal-content"
+                    style="background: #fff; padding: 20px; border-radius: 10px; width: 500px; max-width: 90%;">
+                    <span class="close-button" onclick="closeModal()"
+                        style="float: right; font-size: 24px; cursor: pointer;">&times;</span>
+                    <h2>Edit Article</h2>
+                    <form id="editArticleForm" action="" method="POST">
+                        <div>
+                            <label for="editJudul">Judul:</label>
+                            <input type="text" id="editJudul" name="judul" required>
+                        </div>
+                        <div>
+                            <label for="editSubjudul">Subjudul:</label>
+                            <input type="text" id="editSubjudul" name="subjudul" required>
+                        </div>
+                        <div>
+                            <label for="editParagraf1">Paragraf 1:</label>
+                            <textarea id="editParagraf1" name="paragraf1" required></textarea>
+                        </div>
+                        <div>
+                            <label for="editParagraf2">Paragraf 2:</label>
+                            <textarea id="editParagraf2" name="paragraf2"></textarea>
+                        </div>
+                        <div>
+                            <label for="editParagraf3">Paragraf 3:</label>
+                            <textarea id="editParagraf3" name="paragraf3"></textarea>
+                        </div>
+                        <div>
+                            <label for="editImage1">URL Image 1:</label>
+                            <input type="url" id="editImage1" name="image1"
+                                placeholder="https://example.com/image1.jpg">
+                        </div>
+                        <div>
+                            <label for="editImage2">URL Image 2:</label>
+                            <input type="url" id="editImage2" name="image2"
+                                placeholder="https://example.com/image2.jpg">
+                        </div>
+                        <div>
+                            <label for="editImage3">URL Image 3:</label>
+                            <input type="url" id="editImage3" name="image3"
+                                placeholder="https://example.com/image3.jpg">
+                        </div>
+                        <div>
+                            <button type="submit">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
 
             <script src="/js/admin_artikel.js"></script>
             <script>
@@ -223,5 +320,30 @@
                         });
                 }
             </script>
+            <script>
+                function openModal(id, judul, subjudul, paragraf1, paragraf2, paragraf3, image1, image2, image3) {
+                    // Populate the form with existing data
+                    document.getElementById('editJudul').value = judul;
+                    document.getElementById('editSubjudul').value = subjudul;
+                    document.getElementById('editParagraf1').value = paragraf1;
+                    document.getElementById('editParagraf2').value = paragraf2;
+                    document.getElementById('editParagraf3').value = paragraf3;
+                    document.getElementById('editImage1').value = image1;
+                    document.getElementById('editImage2').value = image2;
+                    document.getElementById('editImage3').value = image3;
+
+                    // Set the form action
+                    document.getElementById('editArticleForm').action = `/editArticle/${id}`;
+
+                    // Display the modal
+                    document.getElementById('editModal').style.display = 'flex';
+                }
+
+                function closeModal() {
+                    document.getElementById('editModal').style.display = 'none';
+                }
+            </script>
+
 </body>
+
 </html>

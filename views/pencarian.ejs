@@ -64,61 +64,78 @@
         </div>
     </div>
 </nav>
-
-<body ng-app="pencarianApp" ng-controller="PencarianController">
-    <div class="container mt-5">
-        <!-- Judul -->
-        <h2 class="text-center mb-5">Pencarian Informasi Kalori</h2>
-
-        <!-- Form Pencarian Makanan -->
-        <div class="input-group mb-4">
-            <input type="text" class="form-control" placeholder="Cari makanan..." ng-model="makanan"
-                ng-change="cariMakanan()">
-            <button class="btn btn-primary" ng-click="cariMakanan()">Cari</button>
-        </div>
-
-        <div ng-if="hasilPencarian.length > 0">
-            <div class="row">
-                <div class="col-12">
-                    <h4 class="mb-3">Hasil Pencarian Makanan:</h4>
+        <body ng-app="pencarianApp" ng-controller="PencarianController">
+            <div class="container mt-5">
+                <!-- Judul -->
+                <h2 class="text-center mb-5">Pencarian Informasi Kalori</h2>
+        
+                <!-- Form Pencarian Makanan -->
+                <div class="input-group mb-4">
+                    <input type="text" class="form-control" placeholder="Cari makanan..." ng-model="makanan"
+                        ng-change="cariMakanan()">
+                    <button class="btn btn-primary" ng-click="cariMakanan()">Cari</button>
                 </div>
-                <div class="col-12 mb-5">
-                    <ul class="list-group">
-                        <li class="list-group-item d-flex align-items-center clickable" ng-repeat="item in hasilPencarian"
-                            ng-click="tampilkanResep(item)">
-                            <img ng-src="{{ item.gambar }}" alt="Gambar {{ item.namaMakanan }}" class="img-thumbnail me-3"
-                                style="width: 80px; height: 80px; object-fit: cover;">
-                            <div>
-                                <strong>{{ item.namaMakanan }}</strong><br>
-                                Kalori: {{ item.kalori }} kkal<br>
-                                Protein: {{ item.protein }} g, Karbohidrat: {{ item.karbohidrat }} g, Lemak: {{ item.lemak }} g
+        
+                <div ng-if="hasilPencarian.length > 0">
+                    <div class="row">
+                        <div class="col-12">
+                            <h4 class="mb-3">Hasil Pencarian Makanan:</h4>
+                        </div>
+                        <div class="col-12 mb-5">
+                            <ul class="list-group">
+                                <li class="list-group-item d-flex align-items-center clickable"
+                                    ng-repeat="item in hasilPencarian" ng-click="tampilkanResep(item)">
+                                    <img ng-src="{{ item.gambar }}" alt="Gambar {{ item.namaMakanan }}"
+                                        class="img-thumbnail me-3" style="width: 80px; height: 80px; object-fit: cover;">
+                                    <div>
+                                        <strong>{{ item.namaMakanan }}</strong><br>
+                                        Kalori: {{ item.kalori }} kkal<br>
+                                        Protein: {{ item.protein }} g, Karbohidrat: {{ item.karbohidrat }} g, Lemak: {{
+                                        item.lemak }} g
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- Pesan jika tidak ada hasil -->
+                <div ng-if="hasilPencarian.length == 0 && makanan" class="text-center mt-3">
+                    <p class="text-muted">Makanan tidak ditemukan.</p>
+                </div>
+            </div>
+        
+            <!-- Modal Resep -->
+            <div class="modal" ng-class="{'show': tampilkanModalResep}">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Resep Membuat {{ resepDipilih.namaMakanan }}</h5>
+                            <button type="button" class="btn-close" aria-label="Close" ng-click="tutupModalResep()">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Gambar Makanan -->
+                            <div class="image-container">
+                                <img ng-src="{{ resepDipilih.gambar }}" alt="{{ resepDipilih.namaMakanan }}" class="img-fluid"
+                                    style="max-width: 100%; height: auto; width: 500px;">
                             </div>
-                        </li>
-                    </ul>
+        
+                            <!-- Bahan-bahan -->
+                            <h6>Bahan-bahan:</h6>
+                            <ul class="ingredients-list">
+                                <li ng-repeat="bahan in resepDipilih.bahan">{{ bahan }}</li>
+                            </ul>
+        
+                            <!-- Resep -->
+                            <h6>Resep:</h6>
+                            <p>{{ resepDipilih.resep }}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Pesan jika tidak ada hasil -->
-        <div ng-if="hasilPencarian.length == 0 && makanan" class="text-center mt-3">
-            <p class="text-muted">Makanan tidak ditemukan.</p>
-        </div>
-    </div>
-
-    <!-- Modal Resep -->
-    <div class="modal" ng-class="{'show': tampilkanModalResep}">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Resep Membuat {{ resepDipilih.namaMakanan }}</h5>
-                    <button type="button" class="btn-close" aria-label="Close" ng-click="tutupModalResep()"></button>
-                </div>
-                <div class="modal-body">
-                    <p>{{ resepDipilih.resep }}</p>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Footer -->
     <footer class="bg-dark text-light py-4 border-top">
@@ -134,9 +151,60 @@
             </small>
         </div>
     </footer>
+    <script>
+        function logout() {
+            fetch('/logout', { method: 'POST' })
+                .then(() => {
+                    window.location.href = '/'; // Redirect ke halaman utama
+                })
+                .catch(err => {
+                    console.error("Logout failed:", err);
+                });
+        }
+    </script>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/js/pencarian.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <script>
+        var app = angular.module("pencarianApp", []);
+
+        app.controller("PencarianController", function ($scope, $http) {
+            $scope.makanan = '';
+            $scope.hasilPencarian = [];
+            $scope.resepDipilih = {};
+            $scope.tampilkanModalResep = false;
+
+            // Fungsi untuk mencari makanan berdasarkan input
+            $scope.cariMakanan = function () {
+                if ($scope.makanan) {
+                    $http.get('/api/foods')  // Memanggil API untuk mendapatkan data makanan
+                        .then(function (response) {
+                            $scope.hasilPencarian = response.data.filter(function (item) {
+                                return item.namaMakanan.toLowerCase().includes($scope.makanan.toLowerCase());
+                            });
+                        })
+                        .catch(function (error) {
+                            console.error('Error fetching foods:', error);
+                        });
+                } else {
+                    $scope.hasilPencarian = [];
+                }
+            };
+
+            // Fungsi untuk menampilkan resep ketika item makanan dipilih
+            $scope.tampilkanResep = function (item) {
+                $scope.resepDipilih = item;
+                $scope.tampilkanModalResep = true;
+            };
+
+            // Fungsi untuk menutup modal resep
+            $scope.tutupModalResep = function () {
+                $scope.tampilkanModalResep = false;
+            };
+        });
+    </script>
 </body>
 
 </html>

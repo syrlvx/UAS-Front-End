@@ -3,6 +3,8 @@ const bcrypt = require('bcrypt');
 const User = require('./model/user');
 const isAdmin = require('./middleware/isAdmin');
 const Article = require('./model/article');
+const Chat = require("./model/chat");
+const Food = require("./model/food");
 const Subscription = require('./model/subscription')
 const app = express();
 const expressLayouts = require("express-ejs-layouts");
@@ -35,7 +37,6 @@ app.use(expressLayouts);
 app.use(express.static("public"));
 app.use(express.json());
 
-
 app.get("/", async (req, res) => {
     const user = req.session.user || null;
     const isAdmin = user && user.role === "admin"; // Periksa apakah user adalah admin
@@ -67,6 +68,16 @@ app.get("/pencarian", (req, res) => {
     });
 });
 
+app.get("/api/foods", async (req, res) => {
+    try {
+        const foods = await Food.find();  // Fetch all foods from MongoDB
+        res.json(foods);  // Send the foods data as a JSON response
+    } catch (error) {
+        console.error('Error fetching foods:', error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
 app.get("/notes", (req, res) => {
     const user = req.session.user || null;
     const isAdmin = user && user.role === "admin"; // Periksa apakah user adalah admin
@@ -96,9 +107,64 @@ app.get("/consul", (req, res) => {
     const isAdmin = user && user.role === "admin"; // Periksa apakah user adalah admin
     res.render("consul.ejs", { 
         layout: false, 
-        username: user ? user.username : null,  // Kirimkan username
-        isAdmin 
+        username: user ? user.username : null,  
+        isAdmin,
+        userId: user ? user._id : null 
     });
+});
+
+app.post('/api/chats/:userId', async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const { sender, text } = req.body;
+
+        console.log("Request received:", { userId, sender, text });
+
+        let chat = await Chat.findOne({ userId });
+
+        if (!chat) {
+            console.log("Chat not found, creating new chat");
+            chat = new Chat({ userId, messages: [] });
+        }
+
+        chat.messages.push({ sender, text });
+        await chat.save();
+
+        console.log("Message saved successfully:", { sender, text });
+        res.status(201).json({ message: 'Message sent successfully' });
+    } catch (error) {
+        console.error("Error in POST /api/chats:", error);
+        res.status(500).json({ message: 'Error sending message', error });
+    }
+});
+
+app.get('/api/chats/:userId', async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const chat = await Chat.findOne({ userId });
+
+        if (!chat) {
+            return res.status(404).json({ message: 'Chat not found' });
+        }
+
+        res.json(chat.messages); // Hanya kirimkan pesan
+    } catch (err) {
+        res.status(500).json({ message: 'Internal Server Error', error: err.message });
+    }
+});
+app.get('/api/chats/:userId', (req, res) => {
+    const userId = req.params.userId;
+
+    // Fetch messages from the database (or wherever they are stored)
+    // Example: db.messages.find({ userId: userId })
+    Chat.find({ userId: userId })
+        .then(messages => {
+            res.json(messages); // Send the messages as a response
+        })
+        .catch(err => {
+            console.error('Error fetching messages:', err);
+            res.status(500).send('Error fetching messages');
+        });
 });
 
 app.get("/kalkulator", (req, res) => {
@@ -132,22 +198,150 @@ app.get("/admin", isAdmin, async (req, res) => {
 });
 app.get("/artikel", isAdmin, async (req, res) => {
     try {
-        const articles = await Article.find(); // Ambil semua data pengguna dari database
-        res.render("admin_artikel.ejs", { layout: false, articles }); // Kirim data pengguna ke template
+        const articles = await Article.find(); // Ambil semua data artikel dari database
+        res.render("admin_artikel.ejs", { layout: false, articles }); // Kirim data artikel ke template
     } catch (err) {
         console.error(err);
-        res.status(500).send("Error fetching user data");
+        res.status(500).send("Error fetching article data");
     }
 });
+app.post('/deleteArticle/:id', async (req, res) => {
+    const articleId = req.params.id;  // Get the article ID from the URL parameters
+
+    try {
+        // Try to delete the article by its ID
+        const result = await Article.findByIdAndDelete(articleId);
+
+        // If no article was found and deleted
+        if (!result) {
+            return res.status(404).send('Article not found');
+        }
+
+        // Redirect to the articles list page after successful deletion
+        res.redirect('/artikel');  // Adjust this based on your route
+    } catch (err) {
+        console.error(err);
+        return res.status(500).send('Error deleting article');
+    }
+});
+// Rute untuk memperbarui artikel
+app.post('/editArticle/:id', async (req, res) => {
+    try {
+        const article = await Article.findById(req.params.id); // Ambil artikel berdasarkan ID
+
+        if (!article) {
+            return res.status(404).send('Artikel tidak ditemukan');
+        }
+
+        // Update data artikel
+        article.judul = req.body.judul;
+        article.subjudul = req.body.subjudul;
+        article.paragraf1 = req.body.paragraf1;
+        article.paragraf2 = req.body.paragraf2 || '';
+        article.paragraf3 = req.body.paragraf3 || '';
+        article.image1 = req.body.image1 || '';
+        article.image2 = req.body.image2 || '';
+        article.image3 = req.body.image3 || '';
+
+        // Simpan perubahan ke database
+        await article.save(); // Simpan perubahan
+
+        res.redirect('/artikel'); // Redirect ke halaman admin
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error updating article');
+    }
+});
+
 app.get("/adminpencarian", isAdmin, async (req, res) => {
     try {
-        const articles = await Article.find(); // Ambil semua data pengguna dari database
-        res.render("admin_pencarian.ejs", { layout: false, articles }); // Kirim data pengguna ke template
+        const foods = await Food.find(); // Ambil semua data pengguna dari database
+        res.render("admin_pencarian.ejs", { layout: false, foods }); // Kirim data pengguna ke template
     } catch (err) {
         console.error(err);
         res.status(500).send("Error fetching user data");
     }
 });
+
+app.post("/addFood", isAdmin, async (req, res) => {
+    try {
+        const { namaMakanan, kalori, protein, karbohidrat, lemak, gambar, resep, bahan } = req.body;
+
+        // Split the ingredients string into an array
+        const bahanArray = bahan.split(',').map(item => item.trim());
+
+        const newFood = new Food({
+            namaMakanan,
+            kalori,
+            protein,
+            karbohidrat,
+            lemak,
+            gambar,
+            resep,
+            bahan: bahanArray
+        });
+
+        await newFood.save(); // Save the new food item to the database
+
+        res.redirect("/adminpencarian"); // Redirect to the admin search page after adding food
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error adding food");
+    }
+});
+app.post("/editFood/:id", isAdmin, async (req, res) => {
+    try {
+        const food = await Food.findById(req.params.id); // Ambil data makanan berdasarkan ID
+
+        if (!food) {
+            return res.status(404).send('Makanan tidak ditemukan');
+        }
+
+        // Update data makanan
+        food.namaMakanan = req.body.namaMakanan;
+        food.kalori = req.body.kalori;
+        food.protein = req.body.protein;
+        food.karbohidrat = req.body.karbohidrat;
+        food.lemak = req.body.lemak;
+        food.gambar = req.body.gambar || '';
+        food.resep = req.body.resep;
+        
+        // Split bahan menjadi array jika ada
+        if (req.body.bahan) {
+            food.bahan = req.body.bahan.split(',').map(item => item.trim());
+        }
+
+        // Simpan perubahan ke database
+        await food.save();
+
+        res.redirect("/adminpencarian"); // Redirect ke halaman admin setelah mengedit makanan
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error updating food");
+    }
+});
+
+app.post('/deleteFood/:id', isAdmin, async (req, res) => {
+    const foodId = req.params.id;  // Dapatkan ID makanan dari URL parameters
+
+    try {
+        // Coba untuk menghapus makanan berdasarkan ID
+        const result = await Food.findByIdAndDelete(foodId);
+
+        // Jika tidak ada makanan yang ditemukan dan dihapus
+        if (!result) {
+            return res.status(404).send('Makanan tidak ditemukan');
+        }
+
+        // Redirect ke halaman pencarian admin setelah berhasil menghapus makanan
+        res.redirect('/adminpencarian');  // Sesuaikan dengan route yang Anda inginkan
+    } catch (err) {
+        console.error(err);
+        return res.status(500).send('Error deleting food');
+    }
+});
+
+
 
 app.get("/adminconsul", isAdmin, async (req, res) => {
     try {
@@ -158,11 +352,19 @@ app.get("/adminconsul", isAdmin, async (req, res) => {
         res.status(500).send("Error fetching user data");
     }
 });
+app.get('/api/users', async (req, res) => {
+    try {
+        const users = await User.find({}, 'username role');
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ message: "Gagal mendapatkan daftar user." });
+    }
+});
 
 app.get("/adminsubscribe", isAdmin, async (req, res) => {
     try {
-        const users = await User.find(); // Ambil semua data pengguna dari database
-        res.render("admin_subscribe.ejs", { layout: false, users }); // Kirim data pengguna ke template
+        const subscriptions = await Subscription.find(); // Ambil semua data pengguna dari database
+        res.render("admin_subscribe.ejs", { layout: false, subscriptions }); // Kirim data pengguna ke template
     } catch (err) {
         console.error(err);
         res.status(500).send("Error fetching user data");
@@ -185,7 +387,7 @@ app.get("/signup",(req, res) => {
 });
 app.post('/signup', async (req, res) => {
     try {
-        const { email, password,username } = req.body;
+        const { email, password, username } = req.body;
 
         // Validasi input
         if (!email || !password) {
@@ -200,7 +402,7 @@ app.post('/signup', async (req, res) => {
 
         // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
-        
+
         // Membuat user baru
         const newUser = new User({
             email,
@@ -209,12 +411,15 @@ app.post('/signup', async (req, res) => {
         });
 
         await newUser.save();
-        res.status(200).json({ success: true });
+
+        // Kirim response yang jelas agar frontend tahu kalau berhasil
+        res.json({ success: true });  // Beri tahu frontend bahwa pendaftaran berhasil
     } catch (err) {
         console.error('Error registering user:', err);
         res.status(500).json({ error: "Terjadi kesalahan pada server." });
     }
 });
+
 
 app.post('/login', async (req, res) => {
     try {
@@ -239,6 +444,7 @@ app.post('/login', async (req, res) => {
 
         // Simpan informasi pengguna di sesi
         req.session.user = {
+            _id: user._id,
             username : user.username,
             email: user.email,
             role: user.role
@@ -261,7 +467,8 @@ app.get('/session-status', (req, res) => {
             loggedIn: true, 
             email: req.session.user.email, 
             username: req.session.user.username,  
-            role: req.session.user.role 
+            role: req.session.user.role,
+            userId: req.session.user._id
         });
     } else {
         res.json({ loggedIn: false });
@@ -304,7 +511,30 @@ app.post('/subscribe', async (req, res) => {
     }
 });
 
+app.post('/addArticle', async (req, res) => {
+    try {
+        const { judul, subjudul, paragraf1, paragraf2, paragraf3, image1, image2, image3 } = req.body;
+
+        // Simpan artikel ke database
+        const newArticle = new Article({
+            judul,
+            subjudul,
+            paragraf1,
+            paragraf2,
+            paragraf3,
+            image1,
+            image2,
+            image3,
+        });
+
+        await newArticle.save();
+        res.redirect('/artikel'); // Redirect ke halaman artikel
+    } catch (error) {
+        console.error('Error adding article:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
 app.listen(port, () => {
   console.log(`Webserver app listening on port ${port}`);
 });
-

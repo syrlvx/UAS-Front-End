@@ -381,3 +381,91 @@ header {
     cursor: pointer;
     /* Memberikan efek pointer saat hover */
 }
+
+.user-management-heading {
+    font-family: Arial, sans-serif;
+    font-size: 24px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: 70px;
+    /* Menambah jarak ke atas */
+}
+
+.user-management-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Header tabel */
+thead {
+    background-color: #a8d5f4;
+    color: white;
+    font-weight: bold;
+}
+
+th,
+td {
+    padding: 12px 15px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+/* Alternating row colors */
+tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Hover effect */
+tbody tr:hover {
+    background-color: #d1e7dd;
+    cursor: pointer;
+}
+
+/* Style tombol Delete */
+form button {
+    padding: 8px 12px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+form button:hover {
+    background-color: #c0392b;
+    transform: scale(1.05);
+}
+
+form button:active {
+    transform: scale(1);
+}
+
+/* Mobile-friendly style */
+@media screen and (max-width: 768px) {
+    table {
+        font-size: 14px;
+    }
+
+    th,
+    td {
+        padding: 8px 10px;
+    }
+
+    form button {
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+}

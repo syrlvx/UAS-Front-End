@@ -76,13 +76,13 @@
     }
 
     .background-container {
-        background: url('https://pid.kepri.polri.go.id/wp-content/uploads/2023/01/kesehatan-tubuh.jpg') no-repeat center center/cover;
+        background: url('https://yavabali.com/cfind/source/thumb/images/cover_w996_h486_shutterstock_554489575w-1.jpg') no-repeat center center/cover;
         width: 100%;
         height: 100%;
         position: absolute;
         top: 0;
         left: 0;
-        z-index: -1;
+        z-index: -10;
     }
 
     #signup-card {
