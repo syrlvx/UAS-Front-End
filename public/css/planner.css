@@ -11,6 +11,93 @@ body {
     min-height: 100vh;
 }
 
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Menyusun elemen secara vertikal di tengah */
+    background: linear-gradient(45deg, rgb(66, 107, 169), #98b9f2);
+    padding: 15px 0;
+    border-bottom: 2px solid #7fd8ecfb;
+    margin-bottom: 0px;
+    height: 90px;
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%; /* Membuat container menggunakan seluruh lebar navbar */
+}
+
+.navbar .navbar-brand {
+    font-weight: bold;
+    font-size: 1.8rem;
+    color: white !important;
+    margin-right: 10px;
+    margin-left: -10px;
+}
+ 
+.navbar-title {
+    font-weight: bold;
+    font-size: 1.8rem;
+    color: white !important;
+    margin-left: 20px;
+    margin-right: auto; /* Memberikan margin ke kanan agar "Halo" dapat berada di tempat yang tepat */
+}
+ 
+.navbar-halo {
+    text-decoration: none;
+    color: white;
+    font-size: 1.2rem;
+    margin-left: auto; /* Membuat teks Halo berada di kanan */
+}
+ 
+.navbar .nav-link {
+    margin-right: 15px;
+    color: white !important;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+ 
+.navbar .nav-link:hover {
+    color: #ffffff;
+    transform: scale(1.1);
+}
+
+.navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba(255, 255, 255, 0.5)' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+.navbar .dropdown-menu {
+    background-color: rgb(66, 107, 169);
+}
+
+.navbar .dropdown-item {
+    color: #ffffff;
+}
+
+.navbar .dropdown-item:hover {
+    background-color: #98b9f2;
+    color: #ffffff;
+}
+
+.navbar .container {
+    margin-left: 30px;
+}
+
+.navbar .btn-primary {
+    background-color: rgb(66, 107, 169);
+    border-color: rgb(66, 107, 169);
+}
+
+.navbar.btn-primary:hover {
+    background-color: #7ca6ed;
+    border-color: rgb(89, 135, 204);
+}
+  
 .main-container {
     display: flex;
     gap: 24px;
@@ -212,4 +299,3 @@ body {
 .empty {
     background-color: transparent;
 }
-
